@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <!-- M. Kevin Ayala Aguilera -->
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Preparador de cargas v2025-MARZO-04-0001</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+    type="text/javascript"
+    src="./js/precarga.js"
+    charset="utf-8"
+  ></script>
+    <link rel="stylesheet" href="./css/app.css" />
+    <link rel="icon" href="./img/icon.png" />
+    <script
+      type="text/javascript"
+      src="./js/xlsx.full.min.js"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      src="./js/config.js"
+      charset="utf-8"
+    ></script>
+  </head>
+  <body id="body">
+    <div id="menu">
+      <h2 style="margin-top: 0; margin-bottom: 0">Configuración</h2>
+      <input
+        type="image"
+        onclick="showOpt(1)"
+        style="filter: grayscale(0%)"
+        src="./img/filtrado.png"
+        value="Filtros Rápidos"
+        title="Filtros Rápidos"
+        onclick=""
+      />
+      <input
+        type="image"
+        onclick="showOpt(2)"
+        style="filter: grayscale(100%)"
+        src="./img/mail.png"
+        value="Destinatarios de Cargas"
+        title="Destinatarios de Cargas"
+        onclick=""
+      />
+      <input
+        type="image"
+        onclick="showOpt(3)"
+        style="filter: grayscale(100%)"
+        src="./img/albaran.png"
+        value="Albaranes"
+        title="Albaranes"
+        onclick=""
+      />
+      <input
+        type="image"
+        onclick="showOpt(4)"
+        id="1"
+        style="filter: grayscale(100%)"
+        src="./img/factura.png"
+        value="Facturas"
+        title="Facturas"
+        onclick=""
+      />
+      <input
+        type="image"
+        onclick="showOpt(5)"
+        id="1"
+        style="filter: grayscale(100%)"
+        src="./img/mhelper.png"
+        value="Mail Helper"
+        title="Mail Helper"
+        onclick=""
+      />
+    </div>
+    <div class="configurador" style="margin-top: 100px">
+      <h2>Filtros rápidos</h2>
+      <p>
+        Estos filtros afectarán a la información que se te mostrará al importar
+        el excel extraído de preparación de las cargas, siempre y cuando actives
+        el botón de filtros rápidos.
+      </p>
+      <br>
+      <input type="checkbox" id="pedidos_disp" />Solo mostrar PEDIDOS
+      Completos<br />
+      <input type="checkbox" id="lineas_disp" />Solo mostrar LÍNEAS Completas<br />
+      <input type="checkbox" id="sin_observaciones" />Solo mostrar PEDIDOS sin
+      OBSERVACIONES<br />
+      <input type="checkbox" id="sin_comentarios" />Solo mostrar LÍNEAS sin
+      COMENTARIOS<br />
+      <input type="checkbox" id="resaltado_fechas" />Ocultar resaltado en
+      errores de fechas<br />
+      <input type="checkbox" id="resaltado_modo" />Ocultar resaltado en errores
+      de modo <br /><br />
+    </div>
+    <div class="configurador" style="margin-top: 100px; display: none">
+      <h2>Destinatarios de cargas</h2>
+      <p>
+        El botón de enviar mail en el filtro te permite autocompletar la
+        información del email con los datos que incluyas aquí. La información
+        que se use dependerá del número de almacén. Puedes añadir tantos
+        almacenes como quieras.
+      </p>
+      <br>
+      <select style="width: 200px" id="almacen_selector">
+        <option id="none" value="Selecciona..."></option>
+      </select>
+      Selecciona un almacén para realizar cambios o crea uno nuevo rellenando el
+      formulario.
+      <br><br>
+      <div class="configWrapper" id="configWrapper">
+        <p>Almacén:</p>
+        <input
+          type="text"
+          placeholder="999"
+          id="almacen"
+          style="width: 200px"
+        />
+        <p>Para:</p>
+        <input
+          type="text"
+          placeholder="999jalmacen@conforama.es, 999recep@conforama.es"
+          id="para"
+        />
+        <p>CC:</p>
+        <input
+          type="text"
+          placeholder="999encurso@conforama.es, 999sac@conforama.es"
+          id="cc"
+        />
+        <p>Tienda/Centro de trabajo:</p>
+        <input
+          type="text"
+          placeholder="La Zenia"
+          id="tienda"
+          style="width: 200px"
+        />
+        <br /><br /><br />
+        <input
+          type="button"
+          value="Guardar cambios / Añadir almacén"
+          id="addAlmacenBTN"
+          style="width: 300px"
+        />
+      </div>
+      <br />
+    </div>
+    <div class="configurador" style="margin-top: 100px; display: none">
+      <h2>Albaranes</h2>
+      <p>
+        Esta configuración afectará a la información que aparezca en los
+        albaranes exportados desde el calendario.
+      </p>
+      <br>
+      <input type="checkbox" id="albaran_almacen" />Mostrar almacén en el
+      albarán<br />
+      <input type="checkbox" id="albaran_rma" />Mostrar "VA CON RMA" en albarán
+      si figura "va con rma" en comentario<br />
+      <input type="checkbox" id="albaran_expo" />Mostrar "EXPOSICIÓN" en albarán
+      si figura "expo" en comentario<br />
+      <input type="checkbox" id="albaran_incidencia" />Mostrar "INCIDENCIA" en
+      albarán si figura "inc" en comentario<br />
+      <input type="checkbox" id="albaran_observaciones1" />Mostrar
+      "Observaciones 1" en albarán<br />
+      <input type="checkbox" id="albaran_observaciones2" />Mostrar
+      "Observaciones 2" en albarán<br />
+      <br />
+    </div>
+    <div class="configurador" style="margin-top: 100px; display: none">
+      <h2>Facturas</h2>
+      <input type="checkbox" id="facturas_pag_1" />Descartar última página de
+      cada factura<br />
+      <input type="checkbox" id="facturas_pag_2" />Descartar las dos últimas
+      página de cada factura<br />
+      <br />
+    </div>
+    <div class="configurador" style="margin-top: 100px; display: none">
+      <h2>Mail Helper</h2>
+
+      <br />
+    </div>
+  </body>
+</html>

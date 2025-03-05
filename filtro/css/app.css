@@ -1,0 +1,413 @@
+﻿* {
+  font-family: "Segoe UI";
+}
+
+body {
+  background-color: rgb(222, 222, 222);
+}
+
+input::file-selector-button {
+  background-color: red;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+select {
+  height: 28px;
+  font-size: medium;
+}
+
+label {
+  height: 28px;
+  font-size: medium;
+}
+
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Para que ocupe todo el ancho */
+  background: white; /* Asegurar que no sea transparente */
+  z-index: 1000; /* Para que esté por encima de otros elementos */
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra opcional para mejor apariencia */
+}
+
+#servicioAdder {
+  position: fixed;
+  top: 65px;
+  left: 0;
+  width: 100%; /* Para que ocupe todo el ancho */
+  background: white; /* Asegurar que no sea transparente */
+  z-index: 800; /* Para que esté por encima de otros elementos */
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra opcional para mejor apariencia */
+}
+
+#menu > * {
+  margin-right: 32px;
+}
+  
+#servicioAdder > * {
+  margin-right: 32px;
+  width: 350px;
+}
+
+#servicioAdder > input[type=button] {
+  width: 150px;
+}
+
+#excel_data {
+  margin-top: 64px;
+  background-color: rgb(222, 222, 222);
+}
+
+input[type="text"] {
+  height: 28px;
+  font-size: medium;
+}
+
+input[type="text"].contador {
+  height: 28px;
+  font-size: medium;
+  border: 0px;
+}
+
+input[type="date"] {
+  cursor: pointer;
+  height: 28px;
+  font-size: medium;
+}
+
+input[type="button"],
+input[type="submit"] {
+  background-color: rgb(33, 150, 243);
+  border-radius: 4px;
+  border: none;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  height: 34px;
+  font-size: medium;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+input[type="button"].cancelBTN, input[type="submit"].cancelBTN {
+  background-color: rgb(255, 0, 0);
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  color: yellow;
+}
+
+input[type="image"] {
+  width: 32px;
+}
+
+input[type="image"]:hover {
+  opacity: 50%;
+}
+
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="image"]:active {
+  color: yellow;
+  transform: translateY(4px);
+}
+
+#configurador,
+#configurador2,
+.card-body,
+.wrapperCliente,
+.configurador {
+  margin: 3em;
+  border-width: 1px;
+  border-color: rgb(200, 200, 200);
+  border-radius: 1em;
+  border-style: solid;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(50, 50, 50, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+#configurador,
+#configurador2,
+.configurador {
+  padding: 1em;
+  padding-bottom: 2em;
+}
+
+#configurador > *, .configurador > * {
+  margin-top: 16px;
+}
+
+#configurador > p, .configurador > p {
+  margin: 0;
+}
+
+#configurador > input[type="text"],
+#configurador > input[type="button"],
+#configurador > input[type="checkbox"],
+#configurador > select,
+#configurador > p {
+  margin-left: 36px;
+}
+
+#configWrapper > input[type="text"],
+#configWrapper > input[type="button"],
+#configWrapper > input[type="checkbox"],
+#configWrapper > select,
+#configWrapper > p {
+  margin-left: 36px;
+}
+
+input[type="checkbox"] {
+  transform: scale(2);
+  margin-left: 2em;
+  margin-right: 2em;
+  accent-color: rgb(33, 150, 243);
+}
+
+#configurador2 > p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-top: 2em;
+}
+
+.contador {
+  width: 40%;
+}
+
+.wrapperDatosCliente {
+  display: flex;
+  justify-content: space-around;
+  border-radius: 1em;
+  border-width: 1px;
+  border-bottom-left-radius: 0em;
+  border-bottom-right-radius: 0em;
+  border-bottom-color: rgb(200, 200, 200);
+  border-bottom-style: solid;
+  flex-wrap: wrap;
+  background-color: rgb(255, 255, 255);
+  font-weight: bold;
+}
+
+.wrapperPedido {
+  font-weight: bold;
+  margin: 1em;
+  padding: 1em;
+  background-color: rgb(255, 255, 255);
+}
+
+.observaciones {
+  float: right;
+}
+
+.comentarioLinea {
+  float: right;
+  text-align: right;
+  font-size: 0.8em;
+}
+
+.wrapperLinea {
+  font-weight: normal;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.wrapperLinea > p {
+  background-color: rgb(254, 253, 252);
+}
+
+.close {
+  cursor: pointer;
+  font-size: 1em;
+  transform: translateY(0.2em);
+}
+
+.close:active {
+  transform: translateY(0.5em);
+}
+
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+
+.error {
+  background-color: yellow;
+}
+
+.supererror {
+  background-color: red;
+}
+
+.wrapperLinea > p.error {
+  background-color: yellow;
+}
+
+#configurador > div {
+  display: flex;
+}
+
+.configWrapper {
+  width: 100%;
+  flex-direction: column;
+}
+
+.configWrapper > input {
+  width: 80%;
+}
+
+.enviarMailCliente {
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 3em;
+  height: 1.7em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ff0000;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 0.8em;
+  width: 0.8em;
+  left: 0.2em;
+  bottom: 0.4em;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2b0000;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #f32121;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 0.4em;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.white-mode {
+  color: white;
+  background-color: white;
+}
+
+#appVersion {
+  margin-block: 0em;
+  padding-top: 6px;
+}
+
+.wrapperLinea > p {
+  overflow: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+}
+
+.wrapperLinea > p:nth-child(1) {
+  /* codigo */
+  width: 5%;
+}
+.wrapperLinea > p:nth-child(2) {
+  /* producto */
+  width: 12%;
+}
+.wrapperLinea > p:nth-child(3) {
+  /* pvp */
+  width: 7%;
+}
+/*
+.wrapperLinea > p:nth-child(4) {
+	vacio
+}
+*/
+.wrapperLinea > p:nth-child(5) {
+  /* almacén */
+  width: 4%;
+}
+/*
+.wrapperLinea > p:nth-child(6) {
+	/* vacio
+}
+*/
+.wrapperLinea > p:nth-child(7) {
+  /* ud */
+  width: 4%;
+}
+.wrapperLinea > p:nth-child(8) {
+  /* fecha */
+  width: 4%;
+}
+.wrapperLinea > p:nth-child(9) {
+  /* modo */
+  width: 3%;
+}
+.wrapperLinea > p:nth-child(10) {
+  /* gastos */
+  width: 10%;
+}
+.wrapperLinea > p:nth-child(11) {
+  /* retiradas */
+  width: 10%;
+}
+.wrapperLinea > p:nth-child(12) {
+  /* comentario */
+  width: 22%;
+}
+
+#soloDispCheckbox {
+  width: 2em;
+  margin-bottom: 1em;
+}

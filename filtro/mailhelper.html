@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+  <!-- M. Kevin Ayala Aguilera -->
+  <meta charset="utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Preparador de cargas v2025-MARZO-04-0001</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script
+  type="text/javascript"
+  src="./js/precarga.js"
+  charset="utf-8"
+></script>
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="icon" href="./img/icon.png">
+  <style type="text/css">
+    input[type=button] {
+      font-size: x-large;
+      margin-top: 1em;
+      height: 120%;
+      background-color: rgba(0, 0, 0, 0.708);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card-body" style="flex-direction: column; width: 40%; margin-left: 30%; margin-right: 30%;">
+      <img width="40%" src="./svg/logo.svg" /><br>MailHelper - hay que poner %0D%0A para saltos de línea<br>
+      <p id="appVersion"></p>
+      <input type="button" value="Diferido disponible" href="#" onclick="enviarComunic(1)" />
+      <input type="button" value="Transporte disponible - no contesta" href="#" onclick="enviarComunic(2)" />
+      <input type="button" value="En ruta - no contesta" href="#" onclick="enviarComunic(3)" />
+      <input type="button" value="SAV disponible - no contesta" href="#" onclick="enviarComunic(4)" />
+      <input type="button" value="Pedido disp resto de pago pendiente" href="#" onclick="enviarComunic(5)" />
+      <div style="display: flex; justify-content: space-evenly;">
+        <input type="button" onclick="sendEmail()" value="Enviar"
+          style="font-size: xx-large; margin-top: 1em; height: 100%; width: 45%; margin-right: 5%;" />
+        <input type="button" onclick="window.location.reload()" value="↻"
+          style="font-size: xx-large; margin-top: 1em; height: 100%; width: 45%; margin-left: 5%;" />
+      </div>
+      <input type="email" id="destinatario" name="destinatario" placeholder="Destinatario@"
+        style="font-size: x-large; margin-top: 1em; height: 100%;">
+      <input id="asunto" type="text" placeholder="Asunto" style="font-size: large; margin-top: 1em; height: 100%;" />
+      <textarea id="cuerpo" placeholder="Mensaje......." wrap="on" cols="30" rows="5"
+        style="font-size: medium; margin-top: 1em; height: 220px;"></textarea>
+    </div>
+
+    <script>
+
+
+      let para = "";
+      let asunto = "";
+      let cuerpo = "";
+      let cc = "";
+
+      function enviarComunic(expr) {
+
+        switch (expr) {
+          case 1:
+            document.getElementById("asunto").value = "Conforama - Pedido/s disponible";
+            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra disponible para recoger.\n%0D%0A\nNuestro horario de recogida es de 11:00 a 19:30 de Lunes a Sábado.\n%0D%0A\nMuchas gracias.\n%0D%0A\n";
+            break;
+          case 2:
+            document.getElementById("asunto").value = "Conforama - Pedido/s para entrega disponible";
+            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra disponible para enviar.\n%0D%0A\nNecesitamos contactar con usted por teléfono para acordar fecha de entrega.\n%0D%0A\nMuchas gracias.\n%0D%0A\n";
+            break;
+          case 3:
+            document.getElementById("asunto").value = "Conforama - Pedido/s en ruta";
+            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra todavía en ruta hoy.\n%0D%0A\nGracias y un saludo.\n%0D%0A\n";
+            break;
+          case 4:
+            document.getElementById("asunto").value = "Conforama - SAV (recambio/repuesto/piezas) disponibles";
+            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido de postventa se encuentra disponible.\n%0D%0A\nNuestro horario de postventa es de 11:00 a 19:30 de Lunes a Sábado.\n%0D%0A\n";
+            break;
+          case 5:
+            document.getElementById("asunto").value = "Conforama - Resto de pago pendiente";
+            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido se encuentra disponible.\n%0D%0A\nTiene un resto de pago pendiente. Puede pagar mediante transferencia bancaria (ES20 2100 8630 4002 0004 7521), en tienda o con tarjeta desde su domicilio, para lo cual necesitamos que se ponga en contacto telefónico con nosotros.\n%0D%0A\nQuedamos a su disposición.\n%0D%0A\nGracias y un saludo.";
+            break;
+        }
+
+      }
+
+      function sendEmail() {
+
+        para = document.getElementById("destinatario").value
+        asunto = document.getElementById("asunto").value
+        cuerpo = document.getElementById("cuerpo").value
+
+        window.location = "mailto:" + para + "?subject=" + asunto + "&cc=" + cc + "&body=" + cuerpo;
+      }
+
+    </script>
+</body>
+
+</html>
