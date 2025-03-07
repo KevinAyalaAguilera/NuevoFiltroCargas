@@ -64,6 +64,9 @@ var soloLineasSinComentarios = false;
 var errorFechas = true;
 var errorModo = true;
 
+var mostrarAvatares = config["checkboxes"].avatares;
+if (mostrarAvatares == undefined) mostrarAvatares = true;
+
 // fin gestión de filtros
 
 document.getElementById("fechaCarga").addEventListener("change", function () {
@@ -98,6 +101,12 @@ class cuentaCliente {
     this.cuenta = cuenta;
     this.nombre = nombre;
     this.telf = telf;
+    this.telfEnds = this.telf;
+    if (this.telfEnds == undefined) this.telfEnds = "0";
+    this.avatar = this.cuenta.slice(-1) + this.telfEnds.slice(-1);
+    if (isNaN(this.avatar)) this.avatar = 0;
+    this.avatar = ((this.avatar * 18) / 99).toFixed(0);
+    if (this.avatar == 0) this.avatar = 1;
     if (this.telf == null) this.telf = '<span class="error">FALTA TELÉFONO</span>';
     this.calle = calle;
     if (this.calle != null) this.calle = this.calle.substring(0, 28);
@@ -128,22 +137,41 @@ class cuentaCliente {
   }
 
   getEncabezado() {
-    return (
-      '<div class="wrapperCliente" id="' +
-      this.cuenta +
-      '">' +
-      '<div class="wrapperDatosCliente" style="width: 100%"><tr>' +
-      '<p>' + this.nombre + "</p>" +
-      '<p>' + this.cuenta + "</p>" +
-      '<p>' + this.telf + "</p>" +
-      '<p>' + this.getEmailIcon() + "</p>" +
-      '<p>' + this.calle + "</p>" +
-      '<p>' + this.ciudad + "</p>" +
-      '<p>' + this.cp + "</p>" +
-      '<p>' + this.provincia + "</p>" +
-      '<span class="close" onclick="killCuenta(\'' + this.cuenta + "'," + this.cuenta + ')">✖</span></td>' +
-      '</div>'
-    );
+    if (!mostrarAvatares) {
+      return (
+        '<div class="wrapperCliente" id="' +
+        this.cuenta +
+        '">' +
+        `<div class="wrapperDatosCliente" style="width: 100%; background-repeat: no-repeat; background-image: url('./img/avatars/${this.avatar}.png');">` +
+        '<p style="margin-left: 32px;">' + this.nombre + "</p>" +
+        '<p>' + this.cuenta + "</p>" +
+        '<p>' + this.telf + "</p>" +
+        '<p>' + this.getEmailIcon() + "</p>" +
+        '<p>' + this.calle + "</p>" +
+        '<p>' + this.ciudad + "</p>" +
+        '<p>' + this.cp + "</p>" +
+        '<p>' + this.provincia + "</p>" +
+        '<span class="close" onclick="killCuenta(\'' + this.cuenta + "'," + this.cuenta + ')">✖</span></td>' +
+        '</div>'
+      );
+    } else {
+      return (
+        '<div class="wrapperCliente" id="' +
+        this.cuenta +
+        '">' +
+        '<div class="wrapperDatosCliente" style="width: 100%"><tr>' +
+        '<p>' + this.nombre + "</p>" +
+        '<p>' + this.cuenta + "</p>" +
+        '<p>' + this.telf + "</p>" +
+        '<p>' + this.getEmailIcon() + "</p>" +
+        '<p>' + this.calle + "</p>" +
+        '<p>' + this.ciudad + "</p>" +
+        '<p>' + this.cp + "</p>" +
+        '<p>' + this.provincia + "</p>" +
+        '<span class="close" onclick="killCuenta(\'' + this.cuenta + "'," + this.cuenta + ')">✖</span></td>' +
+        '</div>'
+      );
+    }
   }
 
   getHoja1() {
@@ -534,7 +562,7 @@ function showFiltrosConfig() {
     soloPedidosSinComentarios = config["checkboxes"].sin_observaciones;
     soloLineasSinComentarios = config["checkboxes"].sin_comentarios;
   
-    errorFechas = config["checkboxes"].resaltado_fechas;
+    errorFechas = !config["checkboxes"].resaltado_fechas;
     errorModo = config["checkboxes"].resaltado_modo;
   } 
   else {

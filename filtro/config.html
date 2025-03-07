@@ -80,6 +80,16 @@
         title="Mail Helper"
         onclick=""
       />
+      <input
+      type="image"
+      onclick="showOpt(6)"
+      id="1"
+      style="filter: grayscale(100%)"
+      src="./img/configurar.png"
+      value="Otras Configuraciones"
+      title="Otras Configuraciones"
+      onclick=""
+        />
     </div>
     <div class="configurador" style="margin-top: 100px">
       <h2>Filtros rápidos</h2>
@@ -99,7 +109,7 @@
       <input type="checkbox" id="resaltado_fechas" />Ocultar resaltado en
       errores de fechas<br />
       <input type="checkbox" id="resaltado_modo" />Ocultar resaltado en errores
-      de modo <br /><br />
+      de modo <br />
     </div>
     <div class="configurador" style="margin-top: 100px; display: none">
       <h2>Destinatarios de cargas</h2>
@@ -184,8 +194,11 @@
     </div>
     <div class="configurador" style="margin-top: 100px; display: none">
       <h2>Mail Helper</h2>
-
       <br />
+    </div>
+    <div class="configurador" style="margin-top: 100px; display: none">
+      <h2>Otras configuraciones</h2>
+      <input type="checkbox" id="avatares" />Ocultar avatares <br /><br />
     </div>
   </body>
 </html>
