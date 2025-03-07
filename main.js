@@ -8,6 +8,8 @@ const { https } = require("follow-redirects"); // Usamos follow-redirects
 const fs = require("fs-extra");
 module.exports = filePath;
 
+console.log("Archivo de config en: " + filePath);
+
 if (!app.isPackaged) {
   console.log("Modo desarrollo detectado, actualizaciones desactivadas.");
   abrirVentana();
@@ -190,13 +192,16 @@ function actualizarVersionPackage(remoteVersion) {
 
 function abrirVentana() {
   let mainWindow;
+  let icono;
+  if (!app.isPackaged) icono = "./filtro/img/barrier.png";
+  else icono = "./filtro/img/icon.png";
 
   app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
       maximized: true,
       width: 1920,
       height: 1080,
-      icon: "./filtro/img/icon.png",
+      icon: icono,
       webPreferences: {
         contextIsolation: false, // Importante para seguridad
         enableRemoteModule: true, // Seguridad extra
@@ -222,7 +227,7 @@ function abrirVentana() {
           },
           {
             label: "Mail Helper",
-            click: () => mainWindow.loadFile("filtro/mailhelper.html"),
+            click: () => abrirMH(),
           },
           { type: "separator" },
           {
@@ -283,4 +288,24 @@ function abrirVentana() {
     }
     return {}; // Si no existe, devuelve un objeto vacío
   });
+}
+
+
+function abrirMH() {
+  let icono = "./filtro/img/mhelper.png";
+  let mhWindow = new BrowserWindow({
+    width: 1000,
+    height: 750,
+    icon: icono,
+    webPreferences: {
+      contextIsolation: false, // Importante para seguridad
+      enableRemoteModule: true, // Seguridad extra
+      nodeIntegration: true, // Bloquea `require` en el frontend
+    },
+  });
+
+  mhWindow.loadFile("filtro/mailhelper.html");
+  if (!app.isPackaged) mhWindow.webContents.openDevTools();
+  mhWindow.setMenu(null);
+
 }

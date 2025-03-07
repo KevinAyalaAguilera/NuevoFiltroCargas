@@ -105,7 +105,7 @@ class cuentaCliente {
     if (this.telfEnds == undefined) this.telfEnds = "0";
     this.avatar = this.cuenta.slice(-1) + this.telfEnds.slice(-1);
     if (isNaN(this.avatar)) this.avatar = 0;
-    this.avatar = ((this.avatar * 18) / 99).toFixed(0);
+    this.avatar = ((this.avatar * 22) / 99).toFixed(0);
     if (this.avatar == 0) this.avatar = 1;
     if (this.telf == null) this.telf = '<span class="error">FALTA TELÉFONO</span>';
     this.calle = calle;
