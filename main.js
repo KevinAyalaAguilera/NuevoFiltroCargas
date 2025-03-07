@@ -23,8 +23,8 @@ async function checkAndApplyUpdates() {
   const localVersion = getLocalVersion();
   const remotePackageJsonUrl =
     "https://github.com/KevinAyalaAguilera/NuevoFiltroCargas/releases/latest/download/package.json";
-  const cssURL =
-    "https://github.com/KevinAyalaAguilera/NuevoFiltroCargas/releases/latest/download/css.zip";
+  const filtroURL =
+    "https://github.com/KevinAyalaAguilera/NuevoFiltroCargas/releases/latest/download/filtro.zip";
 
   try {
     const remoteVersion = await getRemoteVersion(remotePackageJsonUrl);
@@ -33,10 +33,11 @@ async function checkAndApplyUpdates() {
       console.log("Versión repo: " + remoteVersion);
       console.log("Versión local: " + localVersion);
       console.log("Versiones no coinciden.");
-      const cssDir = path.join(__dirname, "filtro", "css");
-      console.log("Bajando archivo para a: " + cssDir);
-      let actualizado = await downloadAndUnzipData(cssURL, cssDir, "CSS");
+      const filtroDir = path.join(__dirname, "filtro");
+      console.log("Bajando archivo para a: " + filtroDir);
+      let actualizado = await downloadAndUnzipData(filtroURL, filtroDir, "filtro");
       if (actualizado) {
+        actualizarVersionPackage(remoteVersion);
         abrirVentana();
         dialog.showMessageBox({
           type: "info",
@@ -167,6 +168,24 @@ function downloadFile(url, destPath) {
         reject(err);
       });
   });
+}
+
+function actualizarVersionPackage(remoteVersion) {
+  try {
+    const packageJsonPath = path.join(__dirname, "package.json");
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+    packageJson.version = remoteVersion;
+
+    fs.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2), (err) => {
+      if (err) {
+          console.error("Error al guardar archivo package.json:", err);
+      } else {
+          console.log("Actualizada versión de package.json:", packageJsonPath);
+      }
+    });
+  } catch (err) {
+      console.error("Error al actualizar el archivo package.json:", err);
+  }
 }
 
 function abrirVentana() {
