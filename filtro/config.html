@@ -10,7 +10,7 @@
     />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Preparador de cargas v2025-MARZO-04-0001</title>
+    <title>Preparador de cargas - Configuración</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script
     type="text/javascript"
@@ -194,6 +194,56 @@
     </div>
     <div class="configurador" style="margin-top: 100px; display: none">
       <h2>Mail Helper</h2>
+      <p>Puedes escribir [referencia] y la información del formulario de MailHelper lo sustituirá.</p>
+      <p>Para agregar saltos de línea usa [n].</p>
+      <br />
+      <p>Diferido disponible:</p>
+        <input
+          type="text"
+          placeholder=" Ejemplo: Hola,[n]]hemos intentado contactar con usted para informarle que su pedido [referencia] se encuentra disponible para recoger.[n]Nuestro horario de recogida es de 11:00 a 19:30 de Lunes a Sábado.[n]Muchas gracias.[n]"
+          id="diferido"
+          style="width: 100%;"
+        />
+        <br /><br />
+        <p>Transporte disponible:</p>
+        <input
+          type="text"
+          placeholder=" Ejemplo: Hola,[n]hemos intentado contactar con usted para informarle que su pedido [referencia] se encuentra disponible para enviar.[n]Necesitamos contactar con usted por teléfono para acordar fecha de entrega.[n]Muchas gracias.[n]"
+          id="transporte"
+          style="width: 100%;"
+        />
+        <br /><br />
+        <p>En Ruta:</p>
+        <input
+          type="text"
+          placeholder=" Ejemplo: Hola,[n]hemos intentado contactar con usted para informarle que su pedido [referencia] se encuentra todavía en ruta hoy.[n]Gracias y un saludo.[n]"
+          id="ruta"
+          style="width: 100%;"
+        />
+        <br /><br />
+        <p>SAV disponible:</p>
+        <input
+          type="text"
+          placeholder=" Ejemplo: Hola,[n]hemos intentado contactar con usted para informarle que su pedido [referencia] de postventa se encuentra disponible.[n]Nuestro horario de postventa es de 11:00 a 19:30 de Lunes a Sábado.[n]"
+          id="sav"
+          style="width: 100%;"
+        />
+        <br /><br />
+        <p>Resto de pago pendiente:</p>
+        <input
+          type="text"
+          placeholder=" Ejemplo: Hola,[n]hemos intentado contactar referente al resto de pago de su pedido [referencia]. Puede pagar mediante transferencia bancaria (ESxx xxxx xxxx xxxx xxxx xxxx), en tienda o con tarjeta desde su domicilio. Esperamos su respuesta.[n]"
+          id="resto"
+          style="width: 100%;"
+        />
+        <br /><br /><br />
+        <input
+          type="button"
+          value="Guardar cambios"
+          id="modifMailHelper"
+          style="width: 300px"
+        />
+      <br />
       <br />
     </div>
     <div class="configurador" style="margin-top: 100px; display: none">

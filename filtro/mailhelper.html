@@ -1,57 +1,125 @@
 <!DOCTYPE html>
 
 <html lang="es">
+  <head>
+    <!-- M. Kevin Ayala Aguilera -->
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Preparador de cargas - MailHelper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      type="text/javascript"
+      src="./js/precarga.js"
+      charset="utf-8"
+    ></script>
+    <link rel="stylesheet" href="./css/app.css" />
+    <link rel="icon" href="./img/icon.png" />
+    <style type="text/css">
+      input[type="button"] {
+        font-size: x-large;
+        margin-top: 1em;
+        width: 30%;
+      }
+      img {
+        margin-top: 1px;
+      }
+    </style>
+  </head>
 
-<head>
-  <!-- M. Kevin Ayala Aguilera -->
-  <meta charset="utf-8" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Preparador de cargas v2025-MARZO-04-0001</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script
-  type="text/javascript"
-  src="./js/precarga.js"
-  charset="utf-8"
-></script>
-  <link rel="stylesheet" href="./css/app.css">
-  <link rel="icon" href="./img/icon.png">
-  <style type="text/css">
-    input[type=button] {
-      font-size: x-large;
-      margin-top: 1em;
-      height: 120%;
-      background-color: rgba(0, 0, 0, 0.708);
-    }
-  </style>
-</head>
+  <body>
+    <div id="menu">
+      <h2 style="margin-top: 0; margin-bottom: 0">
+        En Desarrollo - Mail Helper
+      </h2>
+      <input
+        type="image"
+        style="filter: grayscale(0%)"
+        src="./img/barrier.png"
+        value="Filtros Rápidos"
+        title="Filtros Rápidos"
+        onclick=""
+      />
+    </div>
 
-<body>
-  <div class="container">
-    <div class="card-body" style="flex-direction: column; width: 40%; margin-left: 30%; margin-right: 30%;">
-      <img width="40%" src="./svg/logo.svg" /><br>MailHelper - hay que poner %0D%0A para saltos de línea<br>
-      <p id="appVersion"></p>
-      <input type="button" value="Diferido disponible" href="#" onclick="enviarComunic(1)" />
-      <input type="button" value="Transporte disponible - no contesta" href="#" onclick="enviarComunic(2)" />
-      <input type="button" value="En ruta - no contesta" href="#" onclick="enviarComunic(3)" />
-      <input type="button" value="SAV disponible - no contesta" href="#" onclick="enviarComunic(4)" />
-      <input type="button" value="Pedido disp resto de pago pendiente" href="#" onclick="enviarComunic(5)" />
-      <div style="display: flex; justify-content: space-evenly;">
-        <input type="button" onclick="sendEmail()" value="Enviar"
-          style="font-size: xx-large; margin-top: 1em; height: 100%; width: 45%; margin-right: 5%;" />
-        <input type="button" onclick="window.location.reload()" value="↻"
-          style="font-size: xx-large; margin-top: 1em; height: 100%; width: 45%; margin-left: 5%;" />
-      </div>
-      <input type="email" id="destinatario" name="destinatario" placeholder="Destinatario@"
-        style="font-size: x-large; margin-top: 1em; height: 100%;">
-      <input id="asunto" type="text" placeholder="Asunto" style="font-size: large; margin-top: 1em; height: 100%;" />
-      <textarea id="cuerpo" placeholder="Mensaje......." wrap="on" cols="30" rows="5"
-        style="font-size: medium; margin-top: 1em; height: 220px;"></textarea>
+    <div
+      class="configurador"
+      style="
+        display: flex;
+        flex-direction: column;
+        margin-top: 100px;
+        align-items: center;
+        padding: 0;
+      "
+    >
+      <input
+        type="email"
+        id="destinatario"
+        name="destinatario"
+        placeholder=" Destinatario: por ejemplo paco@gmail.com, 999sac@conforama.es"
+        style="font-size: x-large; margin-top: 1em; height: 100%; width: 60%"
+      />
+      <input
+        type="email"
+        id="referencia"
+        name="referencia"
+        placeholder=" Referencia por ejemplo EPVT123456, SAV202503070000001, etc"
+        style="font-size: x-large; margin-top: 1em; height: 100%; width: 60%"
+      />
+
+      <input
+        type="button"
+        value="Diferido disponible"
+        href="#"
+        onclick="enviarComunic(1)"
+      />
+      <img src="./img/diferido.png">
+      <input
+        type="button"
+        value="Transporte disponible"
+        href="#"
+        onclick="enviarComunic(2)"
+      />
+      <img src="./img/transporte.png">
+      <input
+        type="button"
+        value="En ruta"
+        href="#"
+        onclick="enviarComunic(3)"
+      />
+      <img src="./img/transporteya.png">
+      <input
+        type="button"
+        value="SAV disponible"
+        href="#"
+        onclick="enviarComunic(4)"
+      />
+      <img src="./img/sav.png">
+      <input
+        type="button"
+        value="Resto de pago pendiente"
+        href="#"
+        onclick="enviarComunic(5)"
+      />
+      <img src="./img/pay.png">
+      <br />
     </div>
 
     <script>
-
+      var configData = { almacenes: [], checkboxes: {} };
+      document.addEventListener("DOMContentLoaded", function () {
+        // Función para leer datos desde un archivo JSON
+        try {
+          const data = fs.readFileSync(finalConfigPath, "utf8");
+          configData = JSON.parse(data); // Devuelve los datos como objeto
+        } catch (err) {
+          console.error("Error al leer el archivo de configuración:", err);
+        }
+      });
 
       let para = "";
       let asunto = "";
@@ -59,42 +127,55 @@
       let cc = "";
 
       function enviarComunic(expr) {
+        let ref = document.getElementById("referencia").value;
+        if (ref == null || ref == undefined) ref = "";
 
         switch (expr) {
           case 1:
-            document.getElementById("asunto").value = "Conforama - Pedido/s disponible";
-            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra disponible para recoger.\n%0D%0A\nNuestro horario de recogida es de 11:00 a 19:30 de Lunes a Sábado.\n%0D%0A\nMuchas gracias.\n%0D%0A\n";
+            asunto = "Conforama - Pedido/s " + ref + " disponible";
+            cuerpo =
+              "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra disponible para recoger.\n%0D%0A\nNuestro horario de recogida es de 11:00 a 19:30 de Lunes a Sábado.\n%0D%0A\nMuchas gracias.\n%0D%0A\n";
             break;
           case 2:
-            document.getElementById("asunto").value = "Conforama - Pedido/s para entrega disponible";
-            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra disponible para enviar.\n%0D%0A\nNecesitamos contactar con usted por teléfono para acordar fecha de entrega.\n%0D%0A\nMuchas gracias.\n%0D%0A\n";
+            asunto = "Conforama - Pedido/s " + ref + " para entrega disponible";
+            cuerpo =
+              "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra disponible para enviar.\n%0D%0A\nNecesitamos contactar con usted por teléfono para acordar fecha de entrega.\n%0D%0A\nMuchas gracias.\n%0D%0A\n";
             break;
           case 3:
-            document.getElementById("asunto").value = "Conforama - Pedido/s en ruta";
-            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra todavía en ruta hoy.\n%0D%0A\nGracias y un saludo.\n%0D%0A\n";
+            asunto = "Conforama - Pedido/s " + ref + " en ruta";
+            cuerpo =
+              "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido o unos de sus pedidos se encuentra todavía en ruta hoy.\n%0D%0A\nGracias y un saludo.\n%0D%0A\n";
             break;
           case 4:
-            document.getElementById("asunto").value = "Conforama - SAV (recambio/repuesto/piezas) disponibles";
-            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido de postventa se encuentra disponible.\n%0D%0A\nNuestro horario de postventa es de 11:00 a 19:30 de Lunes a Sábado.\n%0D%0A\n";
+            asunto =
+              "Conforama - SAV " +
+              ref +
+              " (recambio/repuesto/piezas) disponibles";
+            cuerpo =
+              "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido de postventa " +
+              ref +
+              " se encuentra disponible.\n%0D%0A\nNuestro horario de postventa es de 11:00 a 19:30 de Lunes a Sábado.\n%0D%0A\n";
             break;
           case 5:
-            document.getElementById("asunto").value = "Conforama - Resto de pago pendiente";
-            document.getElementById("cuerpo").value = "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido se encuentra disponible.\n%0D%0A\nTiene un resto de pago pendiente. Puede pagar mediante transferencia bancaria (ES20 2100 8630 4002 0004 7521), en tienda o con tarjeta desde su domicilio, para lo cual necesitamos que se ponga en contacto telefónico con nosotros.\n%0D%0A\nQuedamos a su disposición.\n%0D%0A\nGracias y un saludo.";
+            asunto = "Conforama - " + ref + " Resto de pago pendiente";
+            cuerpo =
+              "Hola,\n%0D%0A\nhemos intentado contactar con usted para informarle que su pedido " +
+              ref +
+              " se encuentra disponible.\n%0D%0A\nTiene un resto de pago pendiente. Puede pagar mediante transferencia bancaria (ES20 2100 8630 4002 0004 7521), en tienda o con tarjeta desde su domicilio, para lo cual necesitamos que se ponga en contacto telefónico con nosotros.\n%0D%0A\nQuedamos a su disposición.\n%0D%0A\nGracias y un saludo.";
             break;
         }
 
+        sendEmail();
       }
 
       function sendEmail() {
+        para = document.getElementById("destinatario").value;
+        asunto = asunto;
+        cuerpo = cuerpo;
 
-        para = document.getElementById("destinatario").value
-        asunto = document.getElementById("asunto").value
-        cuerpo = document.getElementById("cuerpo").value
-
-        window.location = "mailto:" + para + "?subject=" + asunto + "&cc=" + cc + "&body=" + cuerpo;
+        window.location =
+          "mailto:" + para + "?subject=" + asunto + "&body=" + cuerpo;
       }
-
     </script>
-</body>
-
+  </body>
 </html>

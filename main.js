@@ -218,11 +218,11 @@ function abrirVentana() {
           },
           {
             label: "Calendario",
-            click: () => mainWindow.loadFile("filtro/calendar.html"),
+            click: () => mainWindow.loadFile("filtro/calendario.html"),
           },
           {
             label: "Mail Helper",
-            click: () => mainWindow.loadFile("filtro/help.html"),
+            click: () => mainWindow.loadFile("filtro/mailhelper.html"),
           },
           { type: "separator" },
           {
@@ -231,7 +231,7 @@ function abrirVentana() {
           },
           {
             label: "Ayuda",
-            click: () => mainWindow.loadFile("filtro/help.html"),
+            click: () => mainWindow.loadFile("filtro/ayuda.html"),
           },
           { type: "separator" },
           {

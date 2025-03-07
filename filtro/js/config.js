@@ -88,6 +88,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Guardar config MailHelper
+    const guardarMailHelper = document.getElementById("modifMailHelper");
+    guardarMailHelper.onclick = function () {
+        let diferido = document.getElementById("diferido").value;
+        let transporte = document.getElementById("transporte").value;
+        let ruta = document.getElementById("ruta").value;
+        let sav = document.getElementById("sav").value;
+        let resto = document.getElementById("resto").value;
+
+        nueva_config.mailhelper.diferido = diferido;
+        nueva_config.mailhelper.transporte = transporte;
+        nueva_config.mailhelper.ruta = ruta;
+        nueva_config.mailhelper.sav = sav;
+        nueva_config.mailhelper.resto = resto;
+
+        guardarJson(nueva_config); // Guardar la configuración actualizada
+        cargarAlmacenes(nueva_config["almacenes"]); // Recargar los almacenes en el selector
+    }
+
     // Función para leer el estado de los checkboxes
     function leerCheckboxes() {
         let checkboxes = {};
@@ -115,6 +134,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     checkbox.checked = config["checkboxes"][id];
                 }
             }
+        }
+
+        if(config) {
+            if (config.mailhelper == undefined) config.mailhelper = {};
+            if (config.mailhelper.diferido == undefined) config.mailhelper.diferido = "";
+            if (config.mailhelper.transporte == undefined) config.mailhelper.transporte = "";
+            if (config.mailhelper.ruta == undefined) config.mailhelper.ruta = "";
+            if (config.mailhelper.sav == undefined) config.mailhelper.sav = "";
+            if (config.mailhelper.resto == undefined) config.mailhelper.resto = "";
+
+            document.getElementById("diferido").value = config.mailhelper.diferido;
+            document.getElementById("transporte").value = config.mailhelper.transporte;
+            document.getElementById("ruta").value = config.mailhelper.ruta;
+            document.getElementById("sav").value = config.mailhelper.sav;
+            document.getElementById("resto").value = config.mailhelper.resto;
         }
     }
 
