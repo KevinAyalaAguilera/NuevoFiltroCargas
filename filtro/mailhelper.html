@@ -261,8 +261,8 @@
             break;
         }
 
-        cuerpo = cuerpo.replace("[referencia]", ref);
-        cuerpo = cuerpo.replace("[n]", "\n%0D%0A\n");
+        cuerpo = cuerpo.replace(/\[referencia\]/g, ref);
+        cuerpo = cuerpo.replace(/\[n\]/g, "\n%0D%0A\n");
 
         sendEmail();
       }

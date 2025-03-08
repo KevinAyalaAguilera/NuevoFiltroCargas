@@ -1,48 +1,231 @@
 <!DOCTYPE html>
 
 <html lang="es">
-
-<head>
-  <!-- M. Kevin Ayala Aguilera -->
-  <meta charset="utf-8" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Preparador de cargas - Ayuda</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script
-  type="text/javascript"
-  src="./js/precarga.js"
-  charset="utf-8"
-></script>
-  <link rel="stylesheet" href="./css/app.css">
-  <link rel="icon" href="./img/icon.png">
-  <!--
+  <head>
+    <!-- M. Kevin Ayala Aguilera -->
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Preparador de cargas - Ayuda</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      type="text/javascript"
+      src="./js/precarga.js"
+      charset="utf-8"
+    ></script>
+    <link rel="stylesheet" href="./css/app.css" />
+    <link rel="icon" href="./img/icon.png" />
+    <!--
   <script type="text/javascript" src="./js/xlsx.full.min.js" charset="utf-8"></script>
   -->
-</head>
+    <style>
+      p {
+        margin-left: 2em;
+      }
+      li {
+        margin-left: 2em;
+      }
+      * {
+        font-size: x-large;
+      }
+    </style>
+  </head>
 
-<body>
-  <div id="menu">
-    <h2 style="margin-top: 0; margin-bottom: 0">En Desarrollo - Ayuda</h2>
-    <input
-      type="image"
-      style="filter: grayscale(0%)"
-      src="./img/barrier.png"
-      value="Filtros Rápidos"
-      title="Filtros Rápidos"
-      onclick=""
-    />
-  </div>
+  <body>
+    <div id="menu">
+      <h2 style="margin-top: 0; margin-bottom: 0">Ayuda</h2>
+    </div>
 
-  <script type="text/javascript" charset="utf-8">
-    var version = new Date().getTime();
-    var script = document.createElement("script");
-    script.src = "./js/calendario.js?=" + version;
-    document.body.appendChild(script);  
-  </script>
-
-
-</body>
-
+    <div class="configurador" style="margin-top: 100px">
+      <h1><u>Filtro de cargas</u></h1>
+      <details>
+        <summary><b>Para qué sirve el filtro</b></summary>
+        <p>
+          La herramienta filtro sirve para importar la información que podemos
+          expotar de Dynamics en el módulo "Preparación de las cargas".
+        </p>
+        <p>
+          Podemos importar más de un excel, pudiendo incorporar por ejemplo los
+          pedidos de nuestro canal/tienda y los de la web.
+        </p>
+        <p>
+          El filtro nos muestra la información de forma más visual que un excel
+          con decenas de columnas y cientos de filas.
+        </p>
+        <p>
+          Resaltará en <span class="error">AMARILLO</span> cualquier error, como
+          campos incompletos, restos de pago, etc.
+        </p>
+        <p>Hay muchas más funcionalidades:</p>
+        <ul>
+          <li>
+            El botón <b>Filtros rápidos</b> en la parte superior izquierda te
+            permite aplicar unos filtros antes de importar el excel, que puedes
+            editar en la configuración (Inicio > Configuración)
+          </li>
+          <li>
+            Poniendo una fecha en el campo del menú superior antes de importar
+            el excel de prep.cargas. comprobará si las fechas de cada línea
+            coinciden con la indicada ahí. Si no lo hacen, lo marcará en
+            <span class="error">AMARILLO</span>.
+          </li>
+          <li>
+            El botón de crear entrega te permite añadir entregas manualmente,
+            esto es útil para incidencias (que no aparece en prep. de las
+            cargas), ausclis que no vayan con nuevo número de pedido, etc.
+          </li>
+          <li>
+            Puedes usar el botón superior para copiar todos los números de
+            pedido, para facilitar el trabajo a la hora de crear la carga en
+            Dynamics - Area de carga de salida.
+          </li>
+          <li>
+            Puedes usar el botón de <b>Archivar carga</b> para generar en tu
+            carpeta de <b>Descargas</b> un archivo .xlsx con la información.
+          </li>
+          <li>
+            Puedes usar el botón de <b>Enviar por email</b> para que te abra la
+            aplicación de correo electrónico y te autocomplete el email con los
+            datos visibles así como con los destinatarios en base al almacén de
+            destino si lo has configurado previamente.
+          </li>
+          <li>
+            Tienes un resumen en la parte superior derecha con los clientes,
+            pedidos, líneas e importes, que se actualiza dinámicamente.
+          </li>
+          <li>
+            Los clientes que tengan correo electrónico tendran una "@" en su
+            información, al hacer click te abrirá correo y te autocompletará
+            destinatario y asunto.
+          </li>
+          <li>
+            Click en código de producto abre info del producto en conforama.es
+            en una nueva ventana.
+          </li>
+        </ul>
+      </details>
+      <details>
+        <summary><b>Preparación previa en Dynamics</b></summary>
+        <p>
+          Si ya has usado una versión previa de éste filtro, no tienes que
+          cambiar nada en Dynamics
+        </p>
+        <p>
+          Las columnas del siguiente desplegable son las necesarias en
+          preparación de las cargas para que el filtro funcione correctamente.
+        </p>
+        <p>
+          El orden solo es importante para las columnas de gastos de entrega y
+          retiradas tipo "Entrega Óptima", ya que hay dos tipos.
+        </p>
+        <p>Las que indica "Sí/No" y las que indica el importe "50 €".</p>
+        <p>
+          La vista estándar funciona, solo necesita que se inserten las dos
+          columnas de "Entrega Premium" para que funcione correctamente.
+        </p>
+      </details>
+      <details>
+        <summary>
+          <b>Columnas prep. de las cargas (leer desplegable anterior)</b>
+        </summary>
+        <p>"Cuenta de cliente"</p>
+        <p>"Nombre"</p>
+        <p>"Teléfono"</p>
+        <p>"Calle"</p>
+        <p>"Ciudad"</p>
+        <p>"Código postal"</p>
+        <p>"Correo electrónico"</p>
+        <p>--------</p>
+        <p>"Total líneas Pedido filtradas"</p>
+        <p>"Total linea reservada "</p>
+        <p>--------</p>
+        <p>"Pedido de ventas"</p>
+        <p>"Resto a pagar Total Pedido"</p>
+        <p>--------</p>
+        <p>"Modo de entrega"</p>
+        <p>"Código de artículo"</p>
+        <p>"Nombre del producto"</p>
+        <p>"Total linea pedido"</p>
+        <p>"Almacén"</p>
+        <p>--------</p>
+        <p>"Comentario línea"</p>
+        <p>"Observaciones 1 (TMS/CDC)"</p>
+        <p>"Observaciones 2 (TMS/CDC)"</p>
+        <p>--------</p>
+        <p>"Cantidad pendiente de entrega"</p>
+        <p>"Cantidad reservada"</p>
+        <p>--------</p>
+        <p>"Entrega Basic"</p>
+        <p>"Entrega Óptima"</p>
+        <p>"Entrega Premium"</p>
+        <p>"Web - Ent. Basic"</p>
+        <p>"Web - Ent. Optima"</p>
+        <p>"Web - Ent. Premium"</p>
+        <p>"Suplemento kilometraje"</p>
+        <p>--------</p>
+        <p>"Retirada descanso"</p>
+        <p>"Retirada de Sillón"</p>
+        <p>"Retirada sofá"</p>
+        <p>"Retirada Chais/Rinconera"</p>
+        <p>"Retirada blanco"</p>
+        <p>--------</p>
+        <p>"Fecha de recepción confirmada"</p>
+        <p>"Fecha de recepción solicitada"</p>
+        <p>"Fecha de envío confirmada"</p>
+      </details>
+      <details>
+        <summary><b>Configuración previa del filtro</b></summary>
+        <p>
+          Ve a Inicio > Configuración. En el menú superior tienes varios botones
+          para las distintas herramientas que puedes configurar.
+        </p>
+        <p>
+          En la primera, que se activa por defecto, puedes configurar los
+          <b>filtros rápidos.</b>
+        </p>
+        <p>
+          En <b>Destinatarios de cargas</b> debes rellenar una configuración
+          para cada almacén al que envías cargas.
+        </p>
+        <p>
+          En el botón final de <b>Otras configuraciones</b> puedes marcar la
+          casilla para ocultar los avatares de monigotes en el filtro.
+        </p>
+      </details>
+      <br />
+      <h1><u>Calendario</u></h1>
+      <details>
+        <summary><b>El calendario todavía está en desarrollo.</b></summary>
+        <p>El calendario todavía está en desarrollo.</p>
+      </details>
+      <br />
+      <h1><u>Mail Helper</u></h1>
+      <details>
+        <summary><b>Para qué sirve Mail Helper</b></summary>
+        <p>
+          Cada día tenemos que mandar emails a clientes con la misma información
+          (pedido disponible, tiene un resto de pago, no contesta...).
+        </p>
+        <p>
+          Con Mail Helper, rellenando dos campos (Destinatario y Referencia) y
+          clicando uno de los botones, nos abrirá el correo electrónico y nos
+          rellenará el destinatario, el asunto y el cuerpo del email.
+        </p>
+        <p>
+          Para ello hay que rellenar previamente las plantillas en Configuración
+          > Mail Helper.
+        </p>
+      </details>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+      var version = new Date().getTime();
+      var script = document.createElement("script");
+      script.src = "./js/calendario.js?=" + version;
+      document.body.appendChild(script);
+    </script>
+  </body>
 </html>

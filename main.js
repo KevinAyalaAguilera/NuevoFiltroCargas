@@ -59,12 +59,6 @@ async function checkAndApplyUpdates() {
     } else {
       console.log("Versiones coinciden, no se requiere actualización.");
       abrirVentana();
-      dialog.showMessageBox({
-        type: "info",
-        title: "Sin actualizaciones",
-        message: "Ya tienes la última versión.",
-        buttons: ["OK"],
-      });
     }
   } catch (error) {
     console.error("Error durante la actualización:", error);
