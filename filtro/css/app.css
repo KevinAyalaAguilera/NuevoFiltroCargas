@@ -39,15 +39,35 @@ label {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra opcional para mejor apariencia */
 }
 
-#sheetjsALM > * {
-  margin-top: 20px;
-  margin-left: 20px;
-  padding: 20px;
+#sheetjsALM > *{
+  position: relative;
+  top: -80px;
+  left: 80px;
 }
 
+#sheetjs > * {
+  position: relative;
+  top: 50px;
+  left: 80px;
+}
 
-#sheetjsALM > tbody {
-  display: block;
+#sheetjs > *::after {
+  content: '';
+  position: absolute;
+  left: 670px;
+  width: 50%;
+  height: 100%;
+  background: white;
+}
+
+#QRPOS {
+  position: relative;
+  left: 550px;
+  top: 100px;
+}
+
+#sheetjsALM, #sheetjs {
+  top: -300;
 }
 
 
@@ -261,6 +281,13 @@ html {
 
 .error {
   background-color: yellow;
+}
+
+
+.hoja1cuenta {
+  font-weight: bold;
+  background-color: rgb(230, 230, 230);
+  color: rgb(0, 0, 0);
 }
 
 .supererror {

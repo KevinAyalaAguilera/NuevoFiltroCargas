@@ -227,28 +227,22 @@ class cuentaCliente {
   }
 
   getHoja1() {
-    let auxNombre = (
-      this.nombre +
-      " ---------------------------------------------------" +
-      "---------------------------------------------------------------------------------------------" +
-      "---------------------------------------------------------------------------------------------"
-    ).slice(0, 80);
+    let auxNombre = this.nombre.slice(0, 30);
     return (
-      "<tr><td>---- " +
-      auxNombre +
-      "</td></tr><tr><td>" +
+      '<br /><div class="pdfcuenta"><span class="hoja1cuenta">' + auxNombre.toUpperCase() + '</span></div>' +
+      '<div class="pdfcuenta">' +
       this.telf +
       " - " +
-      this.calle.slice(0, 20) +
+      this.calle.slice(0, 20).toLowerCase() +
       " - " +
-      this.ciudad +
+      this.ciudad.toLowerCase() +
       " - " +
       this.cp +
-      "</td></tr>"
+      "</div>"
     );
   }
   getHoja2() {
-    return "<tr><td>" + this.ciudad + " - " + this.cp + "</td></tr>";
+    return '<br /><div class="pdfcuenta">' + this.ciudad.toLowerCase() + " - " + this.cp + "</div>";
   }
 
   getArrayPedidos() {
@@ -333,20 +327,18 @@ class pedidoVentas {
 
   getHoja1() {
     return (
-      "<tr><td>- " +
+      '<div class-"pdfpedido"><b>- ' +
       this.pedido +
-      " ---  " +
-      this.obser1 +
+      "</b> ---  " +
+      this.obser1.toLowerCase() +
       " --- " +
-      this.obser2 +
-      " - " +
       this.resto +
-      "</td></tr>"
+      '</div>'
     );
   }
 
   getHoja2() {
-    return "<tr><td>- " + this.pedido + "</td></tr>";
+    return "<div><b>" + this.pedido + "</b></div>";
   }
 }
 
@@ -566,40 +558,38 @@ class linea {
     if (this.cantDisp == undefined) this.cantDisp = 0;
     let importeFixed = this.importe.toFixed(2);
     return (
-      "<tr><td>" +
+      '<div class="pdflinea">' +
       this.codigo +
-      "</td><td>" +
-      "</td><td>" +
-      this.producto.slice(0, 15) +
-      "</td><td>" +
+      " - " +
+      this.producto.slice(0, 15).toUpperCase() +
+      " - " +
       importeFixed +
-      " €</td><td>" +
+      " € - " +
       this.cantDisp +
-      "</td><td>" +
-      this.getEntregasCarga() +
+      " - " +
+      this.getEntregasCarga().toUpperCase() +
       " " +
-      this.getRetiradas() +
+      this.getRetiradas().toUpperCase() +
       " " +
-      this.comentario +
-      "</td></tr>"
+      this.comentario.toLowerCase() +
+      "</div>"
     );
   }
 
   getHoja2() {
     let importeFixed = this.importe.toFixed(2);
     return (
-      "<tr><td>" +
+      '<div class="pdflinea">' +
       this.codigo +
-      "</td><td>" +
-      "</td><td>" +
+      " - " +
       this.producto +
-      "</td><td>" +
+      " - " +
       this.cantDisp +
-      "</td><td>" +
+      " - " +
       this.getRetiradas() +
       " " +
       this.esExpo +
-      "</td></tr>"
+      "</div>"
     );
   }
 
@@ -650,6 +640,8 @@ class linea {
       this.premium2 +
       "</td><td>" +
       this.wpremium +
+      "</td><td>" +
+      this.comentario +
       "</td></tr>"
     );
   }
@@ -980,130 +972,33 @@ function exportarExcel() {
   wb.SheetNames.push(numCarga);
 
   /* modificamos la tabla oculta para añadirle la info */
-  var table_output = "";
-  var table2_output = "";
   var table3_output = "";
   cuentas.filter(Boolean);
   pedidos.filter(Boolean);
   calcularTotalesObjetos();
 
-  table_output +=
-    "<tr><td>Carga " +
-    numCarga +
-    " - " +
-    diaFecha +
-    " " +
-    fechaCarga +
-    " - " +
-    miTienda +
-    " - almacén " +
-    almacen +
-    " - " +
-    empleado +
-    "</td></tr>";
-
-  table2_output +=
-    "<tr><td>Carga " +
-    numCarga +
-    " - " +
-    diaFecha +
-    " " +
-    fechaCarga +
-    "</td></tr><tr><td>" +
-    miTienda +
-    " - almacén " +
-    almacen +
-    " - " +
-    empleado +
-    "</td></tr>";
-
-  table_output +=
-    "<tr><td>Clientes " +
-    totalClientes +
-    " - Pedidos " +
-    totalPedidos +
-    " - PVP " +
-    totalImporte +
-    " € - SIN IVA " +
-    sinIva +
-    " €</td></tr>";
-
   table3_output +=
     "<tr><td>Pedido de ventas</td><td>Nombre</td><td>Calle</td><td>Ciudad</td><td>Código Postal</td><td>Teléfono</td><td>Correo electrónico</td><td>" +
     "Código de artículo</td><td>Nombre del producto</td><td>Sitio</td><td>Almacén</td><td>Cantidad del pedido</td><td>Total linea pedido</td><td>Resto a pagar Total del Pedoido" +
-    "</td><td>Basic</td><td>Web Basic</td><td>Óptima</td><td>Web Óptima</td><td>Premium</td><td>Web Premium</td><td>--</td></tr>";
+    "</td><td>Basic</td><td>Web Basic</td><td>Óptima</td><td>Web Óptima</td><td>Premium</td><td>Web Premium</td><td>Comentario</td><td>--</td></tr>";
 
   for (var c = 0; c < cuentas.length; c++) {
-    table_output += "<tr></tr>";
-    table2_output += "<tr></tr>";
-    table_output += cuentas[c].getHoja1();
-    table2_output += cuentas[c].getHoja2();
-
     for (var p = 0; p < cuentas[c].getArrayPedidos().length; p++) {
-      table_output += cuentas[c].pedidos[p].getHoja1();
-      table2_output += cuentas[c].pedidos[p].getHoja2();
-
       for (var l = 0; l < cuentas[c].pedidos[p].lineas.length; l++) {
-        table_output += cuentas[c].pedidos[p].lineas[l].getHoja1();
-        table2_output += cuentas[c].pedidos[p].lineas[l].getHoja2();
         table3_output += cuentas[c].pedidos[p].lineas[l].getHoja3();
       }
     }
   }
 
-  document.getElementById("sheetjs").innerHTML = table_output;
-  document.getElementById("sheetjsALM").innerHTML = '<div id="QRPOS"></div>' + table2_output;
   document.getElementById("sheetjsMASINFO").innerHTML = table3_output;
 
-  /* find the table element in the page */
-  var tbl = document.getElementById("sheetjs");
-  var tbl2 = document.getElementById("sheetjsALM");
   var tbl3 = document.getElementById("sheetjsMASINFO");
 
   /* create a worksheet and add table */
-  ws = XLSX.utils.table_to_sheet(tbl);
-  ws2 = XLSX.utils.table_to_sheet(tbl2);
-  ws3 = XLSX.utils.table_to_sheet(tbl3);
+  ws = XLSX.utils.table_to_sheet(tbl3);
 
   /* adjustamos anchura columnas */
   ws["!cols"] = [
-    {
-      wch: 6,
-    },
-    {
-      wch: 1,
-    },
-    {
-      wch: 20,
-    },
-    {
-      wch: 9,
-    },
-    {
-      wch: 6,
-    },
-    {
-      wch: 17,
-    },
-  ];
-  ws2["!cols"] = [
-    {
-      wch: 6,
-    },
-    {
-      wch: 1,
-    },
-    {
-      wch: 30,
-    },
-    {
-      wch: 6,
-    },
-    {
-      wch: 17,
-    },
-  ];
-  ws3["!cols"] = [
     {
       wch: 12,
     },
@@ -1141,9 +1036,7 @@ function exportarExcel() {
 
   /* creamos workbook y metemos worksheets */
   wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "CARGA");
-  XLSX.utils.book_append_sheet(wb, ws2, "INFO ALMACÉN");
-  XLSX.utils.book_append_sheet(wb, ws3, "MÁS INFO");
+  XLSX.utils.book_append_sheet(wb, ws, "INFO");
 
   /* export to file */
   console.log(finalDownloadPath);
@@ -1158,10 +1051,94 @@ function exportarExcel() {
 }
 
 async function exportarPDF() {
+
+  var pdf_sac_output = "";
+  var pdf_almacen_output = "";
+  let saltos_sac = 2;
+  let saltos_almacen = 0;
+
+  pdf_sac_output +=
+  "<b><div>Carga " +
+  numCarga +
+  " - " +
+  diaFecha +
+  " " +
+  fechaCarga +
+  " - " +
+  miTienda +
+  " - almacén " +
+  almacen +
+  " - " +
+  empleado +
+  "</div>";
+
+  pdf_almacen_output +=
+    "<b><div>Carga " +
+    numCarga +
+    " - " +
+    diaFecha +
+    " " +
+    fechaCarga +
+    " - " +
+    miTienda +
+    " - almacén " +
+    almacen +
+    " - " +
+    empleado +
+    "</div></b>";
+
+
+
+    pdf_sac_output +=
+    "<div>Clientes " +
+    totalClientes +
+    " - Pedidos " +
+    totalPedidos +
+    " - PVP " +
+    totalImporte +
+    " € - SIN IVA " +
+    sinIva +
+    " €</div></b><br />";
+
+  for (var c = 0; c < cuentas.length; c++) {
+    pdf_sac_output += cuentas[c].getHoja1();
+    pdf_almacen_output += cuentas[c].getHoja2();
+    saltos_sac++;
+    saltos_almacen++;
+    if (saltos_sac == 32) pdf_sac_output += "<br /><br /><br /><br /><br /><br />"
+    if (saltos_sac == 32) saltos_sac = 0;
+    if (saltos_almacen == 38) pdf_almacen_output += "<br /><br /><br /><br /><br /><br /><br />"
+    if (saltos_almacen == 38) saltos_almacen = 0;
+    for (var p = 0; p < cuentas[c].getArrayPedidos().length; p++) {
+      pdf_sac_output += cuentas[c].pedidos[p].getHoja1();
+      pdf_almacen_output += cuentas[c].pedidos[p].getHoja2();
+      saltos_sac++;
+      saltos_almacen++;
+      if (saltos_sac == 32) pdf_sac_output += "<br /><br /><br /><br /><br /><br />"
+      if (saltos_sac == 32) saltos_sac = 0;
+      if (saltos_almacen == 38) pdf_almacen_output += "<br /><br /><br /><br /><br /><br /><br />"
+      if (saltos_almacen == 38) saltos_almacen = 0;
+      for (var l = 0; l < cuentas[c].pedidos[p].lineas.length; l++) {
+        pdf_sac_output += cuentas[c].pedidos[p].lineas[l].getHoja1();
+        pdf_almacen_output += cuentas[c].pedidos[p].lineas[l].getHoja2();
+        saltos_sac++;
+        saltos_almacen++;
+        if (saltos_sac == 32) pdf_sac_output += "<br /><br /><br /><br /><br /><br />"
+        if (saltos_sac == 32) saltos_sac = 0;
+        if (saltos_almacen == 38) pdf_almacen_output += "<br /><br /><br /><br /><br /><br /><br />"
+        if (saltos_almacen == 38) saltos_almacen = 0;
+      }
+    }
+  }
+
+  document.getElementById("sheetjs").innerHTML = pdf_sac_output;
+  document.getElementById("sheetjsALM").innerHTML = '<div id="QRPOS"></div>' + pdf_almacen_output;
+
+  
   /* QR */
   const qrpos = document.getElementById("QRPOS");
+  const sheetjs = document.getElementById("sheetjs");
   const sheetjsALM = document.getElementById("sheetjsALM");
-  sheetjsALM.style.display = "block";
 
   const qr = new QRCode(qrpos, {
     text: numCarga,
@@ -1170,11 +1147,11 @@ async function exportarPDF() {
     id: "qrCode",
   });
 
+  const docE = new jsPDF();
+  const docA = new jsPDF();
 
-  const doc = new jsPDF();
 
-  // Función para convertir doc.html en una promesa
-  function renderHtmlToPdf(htmlElement, options = {}) {
+  function renderHtmlToPdf(htmlElement, doc, options = {}) {
     return new Promise((resolve, reject) => {
       doc.html(htmlElement, {
         ...options,
@@ -1189,14 +1166,40 @@ async function exportarPDF() {
 
   try {
     // Renderizar el primer contenido
-    await renderHtmlToPdf(sheetjsALM);
+    sheetjsALM.style.display = "none";
+    sheetjs.style.display = "block";
+    await renderHtmlToPdf(sheetjs, docE);
 
     // Obtener el contenido del PDF como un ArrayBuffer
-    const pdfBuffer = doc.output("arraybuffer");
+    const pdfBufferE = docE.output("arraybuffer");
 
     // Guardar el PDF en la ruta especificada
-    const filePath = path.resolve(finalDownloadPath, numCarga + ".pdf");
-    fs.writeFile(filePath, Buffer.from(pdfBuffer), (err) => {
+    const filePath = path.resolve(finalDownloadPath,numCarga + "-CARÁTULA.pdf");
+    fs.writeFile(filePath, Buffer.from(pdfBufferE), (err) => {
+      if (err) {
+        console.error("Error al guardar el PDF:", err);
+      } else {
+        console.log("PDF guardado en:", filePath);
+        sheetjs.style.display = "none";
+      }
+    });
+  } catch (error) {
+    console.error("Error al generar el PDF:", error);
+  }
+
+  
+  try {
+    // Renderizar el primer contenido
+    sheetjs.style.display = "none";
+    sheetjsALM.style.display = "block";
+    await renderHtmlToPdf(sheetjsALM, docA);
+
+    // Obtener el contenido del PDF como un ArrayBuffer
+    const pdfBufferA = docA.output("arraybuffer");
+
+    // Guardar el PDF en la ruta especificada
+    const filePath = path.resolve(finalDownloadPath, numCarga + "-ALMACÉN-" + almacen + ".pdf");
+    fs.writeFile(filePath, Buffer.from(pdfBufferA), (err) => {
       if (err) {
         console.error("Error al guardar el PDF:", err);
       } else {
