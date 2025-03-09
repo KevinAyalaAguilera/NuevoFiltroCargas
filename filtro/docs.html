@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <!-- M. Kevin Ayala Aguilera -->
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Preparador de cargas - Preparación de albaranes y facturas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      type="text/javascript"
+      src="./js/precarga.js"
+      charset="utf-8"
+    ></script>
+    <link rel="stylesheet" href="./css/app.css" />
+    <link rel="icon" href="./img/icon.png" />
+    <style>
+      body > #listado > p {
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="menu">
+      <h2 style="margin-top: 0; margin-bottom: 0">
+        Preparación de albaranes y facturas
+      </h2>
+      <input
+        type="date"
+        format="DD-MM-YYYY"
+        id="fechaCarga"
+        name="fechaCarga"
+        title="Fecha de envío"
+      />
+      <input
+        type="image"
+        src="./img/download-pdf-a.png"
+        value="Descargar albaranes"
+        title="Descargar albaranes"
+        onclick="combinarPDFsConA()"
+      />
+      <input
+      type="image"
+      src="./img/download-pdf-f.png"
+      value="Descargar facturas"
+      title="Descargar facturas"
+      onclick="combinarPDFsConF()"
+    />
+    <input
+    type="image"
+    src="./img/files.png"
+    value="Carpeta PDFs"
+    title="Carpeta PDFs"
+    onclick="abrirCarpetaPDFs()"
+  />
+  <input
+  type="image"
+  src="./img/downloads.png"
+  value="Carpeta descargas"
+  title="Carpeta descargas"
+  onclick="abrirCarpetaDescargas()"
+/>
+    </div>
+    <div class="configurador" id="listado" style="margin-top: 100px"></div>
+
+    <script type="text/javascript" charset="utf-8">
+      var version = new Date().getTime();
+      var script = document.createElement("script");
+      script.src = "./js/docs.js?=" + version;
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

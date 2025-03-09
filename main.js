@@ -20,9 +20,9 @@ if (!app.isPackaged) {
   });
 }
 
+let localVersion = getLocalVersion();
 // Función principal para verificar y aplicar actualizaciones
 async function checkAndApplyUpdates() {
-  const localVersion = getLocalVersion();
   const remotePackageJsonUrl =
     "https://github.com/KevinAyalaAguilera/NuevoFiltroCargas/releases/latest/download/package.json";
   const filtroURL =
@@ -220,6 +220,10 @@ function abrirVentana() {
             click: () => mainWindow.loadFile("filtro/calendario.html"),
           },
           {
+            label: "Preparación de albaranes y facturas",
+            click: () => mainWindow.loadFile("filtro/docs.html"),
+          },
+          {
             label: "Mail Helper",
             click: () => abrirMH(),
           },
@@ -234,7 +238,7 @@ function abrirVentana() {
           },
           { type: "separator" },
           {
-            label: "Desarrollador",
+            label: "Desarrollador v" + localVersion,
             click: () => mainWindow.webContents.openDevTools(),
           },
           { type: "separator" },

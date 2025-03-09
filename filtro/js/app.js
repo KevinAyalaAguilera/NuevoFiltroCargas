@@ -1,4 +1,5 @@
 ﻿const { jsPDF } = require("jspdf");
+const { shell } = require('electron');
 
 var idsEnUso = [];
 let cargas = leerCargasJson();
@@ -1680,4 +1681,8 @@ function cerrarAddServicio() {
   document.getElementById("addA").value = "";
   document.getElementById("addR").value = "";
   document.getElementById("addI").value = "";
+}
+
+function abrirCarpetaDescargas() {
+  shell.openPath(finalDownloadPath);
 }
