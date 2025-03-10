@@ -283,11 +283,15 @@ html {
   background-color: yellow;
 }
 
+.pdfpedido {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 
 .hoja1cuenta {
   font-weight: bold;
-  background-color: rgb(230, 230, 230);
   color: rgb(0, 0, 0);
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .supererror {

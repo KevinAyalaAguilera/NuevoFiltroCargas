@@ -1,7 +1,7 @@
 const filePath = path.resolve(finalDocsPath, "cargas.json");
 const { shell } = require('electron');
 var cargas = {};
-const { PDFDocument } = require('pdf-lib');
+const { PDFDocument, rgb } = require("pdf-lib");
 console.log("pdf-lib cargado correctamente:", PDFDocument !== undefined);
 const directorioPDFS = path.resolve(finalDocsPath, "transporte");
 let info = "<p>Debes guardar los albaranes y facturas a preparar en la ruta <b>" + directorioPDFS + "</b>, si no tienes la carpeta creada, créala</p>";
@@ -52,19 +52,19 @@ function mostrarDia() {
 
         cuenta.pedidos.forEach((pedido) => {
 
-          pedido.lineas.forEach((linea) => {
-            const alb = `${carga.numero}-${linea.pedido}-A`;
-            const fct = `${carga.numero}-${linea.pedido}-F`;
-            let status = "";
-            if (listadoCarpeta.includes(alb + ".pdf")) status = checked;
-            else status = unchecked;
-            show += `<p>${alb}${status}`;
-            if (listadoCarpeta.includes(fct + ".pdf")) status = checked;
-            else status = unchecked;
-            show += ` ------- ${fct}${status}</p>`;
-            documentos.push(alb);
-            documentos.push(fct);
-          });
+
+          const alb = `${carga.numero}-${pedido.pedido}-A`;
+          const fct = `${carga.numero}-${pedido.pedido}-F`;
+          let status = "";
+          if (listadoCarpeta.includes(alb + ".pdf")) status = checked;
+          else status = unchecked;
+          show += `<p>${alb}${status}`;
+          if (listadoCarpeta.includes(fct + ".pdf")) status = checked;
+          else status = unchecked;
+          show += ` ------- ${fct}${status}</p>`;
+          documentos.push(alb);
+          documentos.push(fct);
+          
         });
       });
 
@@ -107,6 +107,29 @@ async function combinarPDFsConA() {
           const pdfPath = path.join(directorioPDFS, pdfNombre);
           const pdfBytes = fs.readFileSync(pdfPath);
           const pdfCargado = await PDFDocument.load(pdfBytes);
+
+          // Obtener todas las páginas y agregar una anotación en cada una
+          for (const [index, page] of pdfCargado.getPages().entries()) {
+            const { width, height } = page.getSize();
+
+            let numAlmacen = await obtenerTexto(1, pdfNombre);
+            let textoObservaciones = await obtenerTexto(2, pdfNombre);
+
+            // Agregar anotación de texto en la parte inferior derecha de la página
+            page.drawText(numAlmacen, {
+              x: 40,
+              y: height - 120,
+              size: 24,
+              color: rgb(0, 0, 0),
+            });
+
+            page.drawText(textoObservaciones, {
+              x: 40,
+              y: 60,
+              size: 16,
+              color: rgb(0, 0, 0),
+            });
+          }
 
           // Copiar todas las páginas al PDF final
           const paginas = await pdfFinal.copyPages(pdfCargado, pdfCargado.getPageIndices());
@@ -177,4 +200,30 @@ function abrirCarpetaPDFs() {
 
 function abrirCarpetaDescargas() {
   shell.openPath(finalDownloadPath);
+}
+
+function obtenerTexto(Nmensaje, comboCargaPedido) {
+  let stringaux = comboCargaPedido.split("-");
+  let numpedido = stringaux[1];
+
+  for (const carga of cargas) {
+    for (const cuenta of carga.data) {
+      for (const pedido of cuenta.pedidos) {
+        if (numpedido == pedido.pedido) {
+          if (Nmensaje == 1) {
+            let aux = pedido.lineas[0].almacen;
+            if (aux.includes("<span")) aux = "";
+            return aux || ""; // Retorna vacío si es undefined
+          } 
+          if (Nmensaje == 2) {
+            let aux2 = pedido.obser1;
+            if (aux2.includes("<span")) aux2 = "";
+            return aux2 || ""; // Retorna vacío si es undefined
+          }
+        }
+      }
+    }
+  }
+
+  return ""; // Retorna un string vacío si no se encuentra nada
 }

@@ -98,9 +98,11 @@ function mostrarDia(dia) {
     " € - sin IVA " +
     totalImporteCargaNoIva + " €";
   show += `</summary>`;
+
   cargasDeEsteDia.forEach((element) => {
     show += element;
   });
+
   show += `</details>`;
   document.getElementById("listado").innerHTML += show;
 }

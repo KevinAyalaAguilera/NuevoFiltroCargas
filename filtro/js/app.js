@@ -228,9 +228,10 @@ class cuentaCliente {
   }
 
   getHoja1() {
-    let auxNombre = this.nombre.slice(0, 30);
+    let bNombre = this.nombre + "---------------------------------------------------------------------------------------------------";
+    let auxNombre = bNombre.slice(0, 80);
     return (
-      '<br /><div class="pdfcuenta"><span class="hoja1cuenta">' + auxNombre.toUpperCase() + '</span></div>' +
+      '<br /><div class="pdfcuenta"><span class="hoja1cuenta">---' + auxNombre.toUpperCase() + '</span></div>' +
       '<div class="pdfcuenta">' +
       this.telf +
       " - " +
