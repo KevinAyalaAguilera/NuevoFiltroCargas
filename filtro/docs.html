@@ -17,11 +17,24 @@
       src="./js/precarga.js"
       charset="utf-8"
     ></script>
+    <script type="module">
+      import * as pdfjsLib from './js/pdf/pdf.mjs';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = './js/pdf/pdf.worker.mjs';
+    </script>
     <link rel="stylesheet" href="./css/app.css" />
     <link rel="icon" href="./img/icon.png" />
     <style>
       body > #listado > p {
         margin-top: 1em;
+      }
+      #drop-area:drag-over {
+        border: 2px dashed transparent;
+        transition: all 0.3s ease;
+      }
+        /* Estilo cuando el elemento tiene la clase "dragover" */
+      #drop-area.dragover {
+        border: 2px dashed #3498db; /* Azul */
+        background-color: rgba(52, 152, 219, 0.1); /* Azul claro */
       }
     </style>
   </head>
@@ -46,28 +59,31 @@
         onclick="combinarPDFsConA()"
       />
       <input
-      type="image"
-      src="./img/download-pdf-f.png"
-      value="Descargar facturas"
-      title="Descargar facturas"
-      onclick="combinarPDFsConF()"
-    />
-    <input
-    type="image"
-    src="./img/files.png"
-    value="Carpeta PDFs"
-    title="Carpeta PDFs"
-    onclick="abrirCarpetaPDFs()"
-  />
-  <input
-  type="image"
-  src="./img/downloads.png"
-  value="Carpeta descargas"
-  title="Carpeta descargas"
-  onclick="abrirCarpetaDescargas()"
-/>
+        type="image"
+        src="./img/download-pdf-f.png"
+        value="Descargar facturas"
+        title="Descargar facturas"
+        onclick="combinarPDFsConF()"
+      />
+      <input
+        type="image"
+        src="./img/files.png"
+        value="Carpeta PDFs"
+        title="Carpeta PDFs"
+        onclick="abrirCarpetaPDFs()"
+      />
+      <input
+        type="image"
+        src="./img/downloads.png"
+        value="Carpeta descargas"
+        title="Carpeta descargas"
+        onclick="abrirCarpetaDescargas()"
+      />
     </div>
+    <div><img style="float: right; margin-right: 80px;" id="drop-area" src="img/descarga.png" /></div>
     <div class="configurador" id="listado" style="margin-top: 100px"></div>
+    <div class="configurador" id="checklist" style="margin-top: 100px"></div>
+
 
     <script type="text/javascript" charset="utf-8">
       var version = new Date().getTime();

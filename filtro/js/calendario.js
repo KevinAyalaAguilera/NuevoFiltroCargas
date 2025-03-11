@@ -56,7 +56,7 @@ function mostrarDia(dia) {
           pedido.lineas.forEach((linea) => {
             totalImporteCarga += linea.importe;
             totalImporte += linea.importe;
-            totalRetiradasBlanco += linea.retBlanco;
+            if (linea.retBlanco != "") totalRetiradasBlanco += 1;
           });
         });
       });

@@ -4,66 +4,78 @@ var cargas = {};
 const { PDFDocument, rgb } = require("pdf-lib");
 console.log("pdf-lib cargado correctamente:", PDFDocument !== undefined);
 const directorioPDFS = path.resolve(finalDocsPath, "transporte");
-let info = "<p>Debes guardar los albaranes y facturas a preparar en la ruta <b>" + directorioPDFS + "</b>, si no tienes la carpeta creada, créala</p>";
-info += "<p>Formato de nombre para los albaranes <b>EIDC00000-EPVT00000-A.pdf</b>, es decir  <b>CARGA-PEDIDO-A.pdf</b></p>";
-info += "<p>Formato de nombre para las facturas  <b>EIDC00000-EPVT00000-F.pdf </b></p>";
-info += "<p>Elige la fecha de transporte en el menú superior y esta herramienta te indicará que documentos te faltan</p>";
-info += "<p><b>Recuerda vaciar la carpeta antes de empezar a preparar la documentación de otro día para no juntar albaranes de otros días</b></p>";
-info += "<p>Usa los botones descargar albaranes y descargar facturas para generar en la carpeta <b>descargas</b> un archivo pdf con todos los albaranes y otro con las facturas</p>";
+let info =  "<p>Carga el listado de documentos a preparar buscando el día en el selector superior.</p>";
+info += `<p>Asegúrate de tener creada la carpeta <b>${directorioPDFS}</b> y que esté vacía.</p>`;
+info += "<p>Arrastra los albaranes y facturas que descargues de backoffice, <b>DE UNO EN UNO</b>, en el dibujo de subir archivos a la derecha.</p>";
+info += "<p>Si son albaranes o facturas válidos del transporte de ese día, los copiará a la carpeta de transporte y los renombará adecuadamente.</p>";
+info += "<p><b>Recuerda vaciar la carpeta antes de empezar a preparar la documentación de otro día para no juntar albaranes de otros días.</b></p>";
+info += "<p>Una vez tengas todos, usa los botones descargar albaranes y descargar facturas para generar en la carpeta <b>descargas</b> un archivo pdf con todos los albaranes y otro con las facturas.</p>";
+info += "<p>En los albaranes se anotará el número de almacén y las observaciones del pedido de ventas.</p>";
 info += "<br />";
 document.getElementById("listado").innerHTML = info;
 let documentos = [];
 let listadoCarpeta = pdfsEnCarpeta();
 const checked = `<img src="./img/check.png" style="margin-left: 1em;">`;
 const unchecked = `<img src="./img/unchecked.png" style="margin-left: 1em;">`;
+const dropArea = document.getElementById('drop-area');
 
 
-
-
-try {
-  if (fs.existsSync(filePath)) {
-    const data = fs.readFileSync(filePath, "utf8");
-    cargas = JSON.parse(data); // Devuelve los datos como objeto
+function leerDia() {
+  try {
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, "utf8");
+      cargas = JSON.parse(data); // Devuelve los datos como objeto
+    }
+  } catch (err) {
+    console.error("Error al leer el archivo:", err);
+    cargas = { almacenes: [], checkboxes: {} }; // Datos por defecto
   }
-} catch (err) {
-  console.error("Error al leer el archivo:", err);
-  cargas = { almacenes: [], checkboxes: {} }; // Datos por defecto
+  listadoCarpeta = pdfsEnCarpeta();
 }
 
 var fechaCarga = "";
 
 document.getElementById("fechaCarga").addEventListener("change", function () {
+  leerDia();
   fechaCarga = this.value;
-  console.log(fechaCarga);
   mostrarDia();
 });
 
 
 
 function mostrarDia() {
-  document.getElementById("listado").innerHTML = info;
   documentos == [];
   let show = "";
 
   cargas.forEach((carga) => {
     if (carga.fecha == fechaCarga) {
-
+      show += `<h3>${carga.numero}</h3>`;
       carga.data.forEach((cuenta) => {
 
+        
         cuenta.pedidos.forEach((pedido) => {
 
-
-          const alb = `${carga.numero}-${pedido.pedido}-A`;
-          const fct = `${carga.numero}-${pedido.pedido}-F`;
-          let status = "";
-          if (listadoCarpeta.includes(alb + ".pdf")) status = checked;
-          else status = unchecked;
-          show += `<p>${alb}${status}`;
-          if (listadoCarpeta.includes(fct + ".pdf")) status = checked;
-          else status = unchecked;
-          show += ` ------- ${fct}${status}</p>`;
+          const alb = `${carga.numero}-${pedido.pedido}-A.pdf`;
+          const fct = `${carga.numero}-${pedido.pedido}-F.pdf`;
           documentos.push(alb);
           documentos.push(fct);
+
+          show += `<p>`;
+
+
+          let status = "";
+          if (listadoCarpeta.includes(alb)) status = checked;
+          else status = unchecked;
+          show += `   ${status} ALBARAN`;
+
+          if (listadoCarpeta.includes(fct)) status = checked;
+          else status = unchecked;
+          show += `   ${status} FACTURA`;
+
+
+          show += `   --- ${cuenta.nombre} - ${pedido.pedido}   `;
+
+          show += `</p>`;
           
         });
       });
@@ -71,7 +83,7 @@ function mostrarDia() {
     }
   });
   
-  document.getElementById("listado").innerHTML += show;
+  document.getElementById("checklist").innerHTML = show;
 }
 
 
@@ -227,3 +239,126 @@ function obtenerTexto(Nmensaje, comboCargaPedido) {
 
   return ""; // Retorna un string vacío si no se encuentra nada
 }
+
+// GESTION DE DROP ITEMS
+
+// Evita el comportamiento por defecto del drag & drop
+dropArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropArea.classList.add('dragover');
+});
+
+dropArea.addEventListener('dragleave', (e) => {
+  e.preventDefault();
+  dropArea.classList.remove('dragover');
+});
+
+dropArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropArea.classList.remove('dragover');
+  // Resto de tu código para manejar el archivo...
+});
+
+dropArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  console.log("Has subido un pdf.");
+  const files = e.dataTransfer.files;
+  let ruta = "";
+  
+  Array.from(files).forEach(file => {
+    if (file.type === 'application/pdf') {
+      ruta = path.resolve(finalDownloadPath, file.name);
+      console.log(`Path del archivo: ${ruta}`);
+      const reader = new FileReader();
+      reader.onload = function() {
+        const typedarray = new Uint8Array(this.result);
+        pdfjsLib.getDocument(typedarray).promise.then(pdf => {
+          let fullText = '';
+          let numPages = pdf.numPages;
+          let pagesPromises = [];
+          
+          // Itera por cada página para extraer el texto
+          for (let i = 1; i <= numPages; i++) {
+            pagesPromises.push(
+              pdf.getPage(i).then(page => {
+                return page.getTextContent().then(textContent => {
+                  // Combina los strings de cada elemento del contenido
+                  const pageText = textContent.items.map(item => item.str).join(' ');
+                  fullText += pageText;
+                });
+              })
+            );
+          }
+          
+          // Una vez procesadas todas las páginas, busca la palabra
+          Promise.all(pagesPromises).then(() => {
+            // Cambia 'palabra' por la palabra que desees buscar
+            probarSiContiene(fullText, ruta);
+
+          });
+        }).catch(err => console.error('Error al cargar el PDF: ', err));
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  });
+});
+
+function probarSiContiene(documento, ruta) {
+
+  cargas.forEach((carga) => {
+    if (carga.fecha == fechaCarga) {
+      carga.data.forEach((cuenta) => {
+        cuenta.pedidos.forEach((pedido) => {
+          if (documento.includes(pedido.pedido)) { 
+            if (documento.includes(pedido.lineas[0].codigo)) {
+              console.log(`El documento contiene ${pedido.pedido} y ${pedido.lineas[0].codigo}`);
+              if (documento.includes("EFAC")) {
+                console.log(`Nombre factura: ${carga.numero}-${pedido.pedido}-F.pdf`);
+                moverArchivo(ruta, `${carga.numero}-${pedido.pedido}-F.pdf`, "FACTURA", cuenta.nombre);
+                return;
+              } else if (documento.includes("EALB")) {
+                console.log(`Nombre albarán: ${carga.numero}-${pedido.pedido}-A.pdf`);
+                moverArchivo(ruta, `${carga.numero}-${pedido.pedido}-A.pdf`, "ALBARAN", cuenta.nombre);
+                return;
+              }
+              else console.log("No se si es un albarán o una factura.");
+              return;
+            }
+            else {
+              console.log("No encuentro el producto en ese documento.");
+              return;
+            }
+            return;
+          }
+        });
+      });
+    }
+  });
+}
+
+
+function moverArchivo(rutaOriginal, nombreFinal, tipo, cliente) {
+  // Supón que estos valores vienen de tu lógica
+const originalPath = rutaOriginal;
+const destinationFolder = path.resolve(finalDocsPath, "transporte");;
+const newFileName = nombreFinal;
+
+// Construye la ruta completa de destino
+const destinationPath = path.join(destinationFolder, newFileName);
+
+// Mueve (y renombra) el archivo
+fs.copyFile(originalPath, destinationPath, (err) => {
+  if (err) {
+    console.error('Error al copiar el archivo:', err);
+  } else {
+    alert(`${tipo} de ${cliente} > ${newFileName} guardado en ${destinationPath}`);
+  }
+});
+}
+
+
+setInterval(function(){
+  console.log("Rellamada a cargar Json de cargas y mostrar listado actualizado");
+  leerDia();
+  mostrarDia();
+}, 5000);
