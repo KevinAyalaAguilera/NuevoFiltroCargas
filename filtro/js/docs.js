@@ -41,7 +41,7 @@ document.getElementById("fechaCarga").addEventListener("change", function () {
 function mostrarDia() {
   documentos == [];
   let show = info;
-  show += "<p>Deja caer aquí los albaranes y facturas que te falten, de uno en uno.</p><br />";
+  show += "<p>Tras elegir el día en el selector superior, deja caer aquí los albaranes y facturas que te falten, de uno en uno.</p><br />";
 
   cargas.forEach((carga) => {
     if (carga.fecha == fechaCarga) {

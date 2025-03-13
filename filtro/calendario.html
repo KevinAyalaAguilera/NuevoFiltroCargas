@@ -17,13 +17,36 @@
 ></script>
   <link rel="stylesheet" href="./css/app.css">
   <link rel="icon" href="./img/icon.png">
+  <style>
+    .dia:hover {
+      background-color: aqua;
+    }
+    .dia:active {
+      transform: translateY(4px);
+    }
+    button {
+      background-color: rgb(0,0,0,0);
+      border: none;
+    }
+    button:hover {
+      transform: scale(1.2);
+      background-color: aqua;
+      color: black;
+    }
+    button:active {
+      transform: translateY(4px);
+    }
+  </style>
 </head>
 
 <body>
   <div id="menu">
     <h2 style="margin-top: 0; margin-bottom: 0">Calendario</h2>
   </div>
-  <div class="configurador" id="listado"  style="margin-top: 100px">
+  <div class="configurador" id="calendario"  style="margin-top: 100px">
+
+  </div>
+  <div class="configurador" id="detalle"  style="margin-top: 20px">
 
   </div>
 

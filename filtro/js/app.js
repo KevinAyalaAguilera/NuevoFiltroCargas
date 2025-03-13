@@ -958,7 +958,12 @@ function calcularTotalesObjetos() {
 function exportarExcel() {
   generarPopUpAlerta();
 
-  if (confirm("¿Deas guardar la carga?")) {
+  if (cargas.some(carga => carga.numero === numCarga)) {
+    alert("YA EXISTE UNA CARGA CON ESE IDENTIFICADOR, NO ES POSIBLE CREAR LA CARGA.");
+    return;
+  }
+
+  if (confirm("¿Deseas guardar la carga?")) {
   } else {
     return;
   }
