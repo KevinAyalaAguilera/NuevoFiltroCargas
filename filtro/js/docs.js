@@ -4,21 +4,16 @@ var cargas = {};
 const { PDFDocument, rgb } = require("pdf-lib");
 console.log("pdf-lib cargado correctamente:", PDFDocument !== undefined);
 const directorioPDFS = path.resolve(finalDocsPath, "transporte");
-let info =  "<p>Carga el listado de documentos a preparar buscando el día en el selector superior.</p>";
-info += `<p>Asegúrate de tener creada la carpeta <b>${directorioPDFS}</b> y que esté vacía.</p>`;
-info += "<p>Arrastra los albaranes y facturas que descargues de backoffice, <b>DE UNO EN UNO</b>, en el dibujo de subir archivos a la derecha.</p>";
-info += "<p>Si son albaranes o facturas válidos del transporte de ese día, los copiará a la carpeta de transporte y los renombará adecuadamente.</p>";
-info += "<p><b>Recuerda vaciar la carpeta antes de empezar a preparar la documentación de otro día para no juntar albaranes de otros días.</b></p>";
-info += "<p>Una vez tengas todos, usa los botones descargar albaranes y descargar facturas para generar en la carpeta <b>descargas</b> un archivo pdf con todos los albaranes y otro con las facturas.</p>";
-info += "<p>En los albaranes se anotará el número de almacén y las observaciones del pedido de ventas.</p>";
+const dropArea = document.getElementById('listado');
+let info =  "";
+info += `<p>Asegúrate de tener creada la carpeta <b>${directorioPDFS}</b> y que esté vacía antes de empezar.</p>`;
 info += "<br />";
-document.getElementById("listado").innerHTML = info;
+dropArea.innerHTML = info;
 let documentos = [];
 let listadoCarpeta = pdfsEnCarpeta();
 const checked = `<img src="./img/check.png" style="margin-left: 1em;">`;
 const unchecked = `<img src="./img/unchecked.png" style="margin-left: 1em;">`;
-const dropArea = document.getElementById('drop-area');
-
+const displayMessage = document.getElementById("mensaje");
 
 function leerDia() {
   try {
@@ -45,7 +40,8 @@ document.getElementById("fechaCarga").addEventListener("change", function () {
 
 function mostrarDia() {
   documentos == [];
-  let show = "";
+  let show = info;
+  show += "<p>Deja caer aquí los albaranes y facturas que te falten, de uno en uno.</p><br />";
 
   cargas.forEach((carga) => {
     if (carga.fecha == fechaCarga) {
@@ -83,7 +79,7 @@ function mostrarDia() {
     }
   });
   
-  document.getElementById("checklist").innerHTML = show;
+  dropArea.innerHTML = show;
 }
 
 
@@ -293,7 +289,7 @@ dropArea.addEventListener('drop', (e) => {
           // Una vez procesadas todas las páginas, busca la palabra
           Promise.all(pagesPromises).then(() => {
             // Cambia 'palabra' por la palabra que desees buscar
-            probarSiContiene(fullText, ruta);
+            if (probarSiContiene(fullText.toUpperCase(), ruta)) return;
 
           });
         }).catch(err => console.error('Error al cargar el PDF: ', err));
@@ -309,26 +305,31 @@ function probarSiContiene(documento, ruta) {
     if (carga.fecha == fechaCarga) {
       carga.data.forEach((cuenta) => {
         cuenta.pedidos.forEach((pedido) => {
-          if (documento.includes(pedido.pedido)) { 
-            if (documento.includes(pedido.lineas[0].codigo)) {
+          if (documento.includes(pedido.pedido.toUpperCase())) { 
+            if (documento.includes(pedido.lineas[0].codigo.toUpperCase())) {
               console.log(`El documento contiene ${pedido.pedido} y ${pedido.lineas[0].codigo}`);
               if (documento.includes("EFAC")) {
                 console.log(`Nombre factura: ${carga.numero}-${pedido.pedido}-F.pdf`);
                 moverArchivo(ruta, `${carga.numero}-${pedido.pedido}-F.pdf`, "FACTURA", cuenta.nombre);
-                return;
+                return true;
               } else if (documento.includes("EALB")) {
                 console.log(`Nombre albarán: ${carga.numero}-${pedido.pedido}-A.pdf`);
                 moverArchivo(ruta, `${carga.numero}-${pedido.pedido}-A.pdf`, "ALBARAN", cuenta.nombre);
-                return;
+                return true;
               }
               else console.log("No se si es un albarán o una factura.");
-              return;
+              alertaSubida(false);
+              return false;
             }
             else {
               console.log("No encuentro el producto en ese documento.");
-              return;
+              alertaSubida(false);
+              return false;
             }
-            return;
+          } else {
+            console.log("Documento no identificado.");
+            alertaSubida(false);
+            return false;
           }
         });
       });
@@ -351,7 +352,8 @@ fs.copyFile(originalPath, destinationPath, (err) => {
   if (err) {
     console.error('Error al copiar el archivo:', err);
   } else {
-    alert(`${tipo} de ${cliente} > ${newFileName} guardado en ${destinationPath}`);
+    alertaSubida(true);
+    // lert(`${tipo} de ${cliente} > ${newFileName} guardado en ${destinationPath}`);
   }
 });
 }
@@ -362,3 +364,19 @@ setInterval(function(){
   leerDia();
   mostrarDia();
 }, 5000);
+
+
+
+async function alertaSubida(auxBol) {
+  await changeBackground(auxBol);
+  displayMessage.style.display = "block";
+  setTimeout(() => {
+    displayMessage.style.display = "none";
+    displayMessage.style.backgroundImage = ``;
+  }, 1500);
+}
+
+async function changeBackground(auxBol) {
+  if (auxBol) displayMessage.style.backgroundImage = `url("./img/rep.png")`;
+  else if (!auxBol) displayMessage.style.backgroundImage = `url("./img/cancel.png")`;
+}

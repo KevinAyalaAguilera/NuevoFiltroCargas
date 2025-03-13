@@ -18,8 +18,8 @@
       charset="utf-8"
     ></script>
     <script type="module">
-      import * as pdfjsLib from './js/pdf/pdf.mjs';
-      pdfjsLib.GlobalWorkerOptions.workerSrc = './js/pdf/pdf.worker.mjs';
+      import * as pdfjsLib from "./js/pdf/pdf.mjs";
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "./js/pdf/pdf.worker.mjs";
     </script>
     <link rel="stylesheet" href="./css/app.css" />
     <link rel="icon" href="./img/icon.png" />
@@ -27,14 +27,36 @@
       body > #listado > p {
         margin-top: 1em;
       }
-      #drop-area:drag-over {
+      #listado:drag-over {
         border: 2px dashed transparent;
         transition: all 0.3s ease;
       }
-        /* Estilo cuando el elemento tiene la clase "dragover" */
-      #drop-area.dragover {
+      /* Estilo cuando el elemento tiene la clase "dragover" */
+      #listado.dragover {
         border: 2px dashed #3498db; /* Azul */
         background-color: rgba(52, 152, 219, 0.1); /* Azul claro */
+      }
+      .mensaje {
+        background-image: url("./img/rep.png");
+        display: block;
+        background-size: 512px;
+        height: 512px;
+        width: 512px;
+        background-repeat: no-repeat;
+        position: absolute;
+        align-content: center;
+        top: 200px;
+        z-index: 50;
+        position-area: bottom;
+        animation: balanceo 2s infinite alternate ease-in-out;
+      }
+      @keyframes balanceo {
+        0% {
+          transform: perspective(512px) rotate3d(1, -1, -1, 18deg);
+        }
+        100% {
+          transform: perspective(512px) rotate3d(-1, -1, 1, -18deg);
+        }
       }
     </style>
   </head>
@@ -80,10 +102,8 @@
         onclick="abrirCarpetaDescargas()"
       />
     </div>
-    <div><img style="float: right; margin-right: 80px;" id="drop-area" src="img/descarga.png" /></div>
     <div class="configurador" id="listado" style="margin-top: 100px"></div>
-    <div class="configurador" id="checklist" style="margin-top: 100px"></div>
-
+    <div class="mensaje" id="mensaje" style="display: none"></div>
 
     <script type="text/javascript" charset="utf-8">
       var version = new Date().getTime();
