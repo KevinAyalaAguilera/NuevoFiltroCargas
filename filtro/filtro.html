@@ -26,6 +26,7 @@
   <div id="menu">
     <input type="image" id="btnfiltros" src="./img/filtro.png" value="Filtros Rápidos" title="Filtros Rápidos, puedes configurarlos desde el menú de configuración" onclick="showFiltrosConfig()"  />
     <input type="date" format="DD-MM-YYYY" id="fechaCarga" name="fechaCarga" title="Fecha de envío">
+    <input type="text" id="numeroAlmacen" name="numeroAlmacen" title="Número de Almacén" placeholder=" Almacén (número)" style="width: 140px;">
     <input type="file" style="display: none;" id="excel_file" />
     <input type="image" src="./img/excel.png" value="Importar Excel" title="Importar Excel" id="activadorImportar"></input>
     <input type="image" src="./img/mas.png" value="Crear Entrega" title="Crear Entrega" onclick="mostrarAddServicio()" />
@@ -40,14 +41,20 @@
     <input type="text" id="contador" class="contador"/>
     </div>
   <div id="servicioAdder" style="display: none;">
-    <input type="text" id="addC" placeholder=" Datos del cliente">
-    <input type="text" id="addP" placeholder=" Datos del pedido">
-    <input type="text" id="addL" placeholder=" Código de artículo" maxlength="15">
-    <input type="text" id="addA" placeholder=" Almacén" style="width: 100px;">
-    <input type="text" id="addR" placeholder=" Resto de pago" style="width: 130px;">
-    <input type="text" id="addI" placeholder=" Comentario de línea">
-    <input type="button" value="Añadir" onclick="addServicio()">
-    <input type="button" value="Cerrar" class="cancelBTN" onclick="cerrarAddServicio()">
+    <input type="text" id="add1" placeholder=" Cuenta CE..." style="width: 200px;">
+    <input type="text" id="add5" placeholder=" Pedido EPVT... o ERMA..." style="width: 300px;">
+    <input type="text" id="add2" placeholder=" Nombre" style="width: 330px;">
+    <input type="text" id="add3" placeholder=" Dirección" style="width: 450px;">
+    <input type="text" id="add4" placeholder=" Teléfono" style="width: 200px;">
+    <input type="text" id="add6" placeholder=" Resto de pago" style="width: 130px;">
+    <input type="text" id="add8" placeholder=" Código de artículo" maxlength="15" style="width: 140px;">
+    <input type="text" id="add9" placeholder=" Producto" maxlength="15" style="width: 200px;">
+    <input type="text" id="add10" placeholder=" Almacén" style="width: 100px;">
+    <input type="text" id="add7" placeholder=" Observaciones 1" style="width: 350px;">
+    <input type="text" id="add11" placeholder=" Comentario de línea" style="width: 350px;">
+    <input type="button" value="Añadir" onclick="addServicio()" >
+    <input type="button" value="Cerrar" class="cancelBTN" onclick="cerrarAddServicio()" >
+
   </div>
 
 
@@ -58,7 +65,7 @@
       var version = new Date().getTime();
       var script = document.createElement("script");
       script.src = "./js/app.js?=" + version;
-      document.body.appendChild(script);  
+      document.body.appendChild(script);
     </script>
     <script
     type="text/javascript"

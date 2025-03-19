@@ -1,63 +1,125 @@
 <!DOCTYPE html>
 
 <html lang="es">
+  <head>
+    <!-- M. Kevin Ayala Aguilera -->
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Preparador de cargas - Calendario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      type="text/javascript"
+      src="./js/precarga.js"
+      charset="utf-8"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./css/app.css" />
+    <link rel="icon" href="./img/icon.png" />
+    <style>
+      #detalle > *, #detalle > * > *, #detalle > * > * > *, #detalle > * > * > * > * {
+        font-family: monospace, monospace;
+        font-size: large;
+      }
+      .dia:hover {
+        background-color: aqua;
+        cursor: pointer;
+      }
+      .dia:active {
+        transform: translateY(4px);
+      }
+      button {
+        background-color: rgb(0, 0, 0);
+        color: white;
+        border: none;
+        margin-left: 2em;
+      }
+      button:hover {
+        transform: scale(1.2);
+        background-color: rgb(255, 242, 0);
+        color: black;
+        cursor: pointer;
+      }
+      button:active {
+        transform: translateY(4px);
+      }
+      body > #detalle > * > {
+        margin-top: 2em;
+      }
+      body > #detalle > * > * {
+        margin-top: 1.5em;
+      }
+      body > #detalle > * > * > * {
+        margin-top: 1em;
+      }
+      body > #detalle > * > * > * > * {
+        margin-top: 0.5em;
+      }
+      #calendario > div, #detalle > div:nth-child(1) > * {
+        font-family: "Segoe UI";
+      }
 
-<head>
-  <!-- M. Kevin Ayala Aguilera -->
-  <meta charset="utf-8" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Preparador de cargas - Calendario</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script
-  type="text/javascript"
-  src="./js/precarga.js"
-  charset="utf-8"
-></script>
-  <link rel="stylesheet" href="./css/app.css">
-  <link rel="icon" href="./img/icon.png">
-  <style>
-    .dia:hover {
-      background-color: aqua;
-    }
-    .dia:active {
-      transform: translateY(4px);
-    }
-    button {
-      background-color: rgb(0,0,0,0);
-      border: none;
-    }
-    button:hover {
-      transform: scale(1.2);
-      background-color: aqua;
-      color: black;
-    }
-    button:active {
-      transform: translateY(4px);
-    }
-  </style>
-</head>
+      body > #menu > h2 {
+        font-family: "Segoe UI";
+        display: block;
+        font-size: 1.5em;
+        margin-block-start: 0.83em;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        margin-right: 32px;
+        font-weight: bold;
+        unicode-bidi: isolate;
+      }
+      h4 {
+        font-size: larger;
+        border-bottom: 1px solid;
+        background-color: rgba(0, 255, 255, 0.5);
+      }
+      #menu > h3 {
+        font-weight: lighter;
+        margin: 0px;
+        text-align: right;
+        margin-right: 4px;
+      }
+      canvas.configurador {
+        margin-left: 300px;
+        margin-right: 300px;
+      }
+      p.calendarBTN {
+        position: relative;
+        display: inline-block;
+        text-align:center;
+      }
+    </style>
+  </head>
 
-<body>
-  <div id="menu">
-    <h2 style="margin-top: 0; margin-bottom: 0">Calendario</h2>
-  </div>
-  <div class="configurador" id="calendario"  style="margin-top: 100px">
-
-  </div>
-  <div class="configurador" id="detalle"  style="margin-top: 20px">
-
-  </div>
-
-  <script type="text/javascript" charset="utf-8">
-    var version = new Date().getTime();
-    var script = document.createElement("script");
-    script.src = "./js/calendario.js?=" + version;
-    document.body.appendChild(script);  
-  </script>
-
-
-</body>
-
+  <body>
+    <div id="menu">
+      <h2 style="margin-top: 0; margin-bottom: 0">Calendario</h2>
+      <h3>Desde</h3><input type="date" format="DD-MM-YYYY" id="fechaDesde" name="fechaDesde" title="Desde">
+      <h3>Hasta</h3><input type="date" format="DD-MM-YYYY" id="fechaHasta" name="fechaHasta" title="Hasta">
+      <input style="margin-left: 30px;" type="image" src="./img/calb1.png"  title="Hoy D+0" href="#" onclick="mostrarDia(1)" />
+      <input style="margin-left: 30px;" type="image" src="./img/calb2.png"  title="Mañana D+1" href="#" onclick="mostrarDia(2)" />
+      <input style="margin-left: 30px;" type="image" src="./img/calb3.png"  title="Pasado mañana D+2" href="#" onclick="mostrarDia(3)" />
+      <input style="margin-left: 30px;" type="image" src="./img/calb4.png"  title="D+0+1+2" href="#" onclick="mostrarDia(4)" />
+      <input style="margin-left: 30px;" type="image" src="./img/calb5.png"  title="Ayer D-1" href="#" onclick="mostrarDia(5)" />
+      <input style="margin-left: 30px;" type="image" src="./img/calb6.png"  title="Quincena D-15 -> D+0" href="#" onclick="mostrarDia(6)" />
+      <input style="margin-left: 30px;" type="image" src="./img/lista.png"  title="Exportar a excel" href="#" onclick="exportarExcel()" />
+    </div>
+    <canvas class="configurador" id="calendario" style="margin-top: 100px"></canvas>
+    <div class="configurador" id="detalle" style="margin-top: 20px"></div>
+    <table id="sheetjsMASINFO" hidden>
+    </table>
+    <script type="text/javascript" charset="utf-8">
+      var version = new Date().getTime();
+      var script = document.createElement("script");
+      script.src = "./js/calendario.js?=" + version;
+      document.body.appendChild(script);
+    </script>
+  </body>
 </html>

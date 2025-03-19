@@ -2,6 +2,8 @@
   font-family: "Segoe UI";
 }
 
+/* cursor: url("../img/cursor.png"), auto; */
+
 body {
   background-color: rgb(222, 222, 222);
 }
@@ -12,6 +14,10 @@ input::file-selector-button {
   border: none;
   color: white;
   text-decoration: none;
+  cursor: pointer;
+}
+
+input:hover, .close:hover, a:hover, details, summary > b {
   cursor: pointer;
 }
 
@@ -90,6 +96,7 @@ label {
 }
   
 #servicioAdder > * {
+  margin-top: 1em;
   margin-right: 32px;
   width: 350px;
 }

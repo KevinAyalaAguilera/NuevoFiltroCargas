@@ -15,6 +15,7 @@ function leerJson() {
     try {
         if (fs.existsSync(finalConfigPath)) {
             const data = fs.readFileSync(finalConfigPath, 'utf8');
+            console.log("Configuración localizada en:", finalConfigPath);
             return JSON.parse(data); // Devuelve los datos como objeto
         }
     } catch (err) {

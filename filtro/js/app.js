@@ -17,13 +17,12 @@ var fechaCarga;
 var fechaComparator;
 var fechaFinal;
 var diaFecha;
-var textoVersion;
 
 var para = "";
 var cc = "";
 
 var numCarga;
-var almacen;
+var almacen = "";
 var empleado;
 var miTienda;
 
@@ -41,6 +40,8 @@ var filtrosActivados = false;
 
 // leer configuración
 
+var mostrarAvatares = true;
+
 // Función para leer datos desde un archivo JSON
 function leerJson() {
   try {
@@ -53,9 +54,12 @@ function leerJson() {
     return { almacenes: [], checkboxes: {} }; // Datos por defecto
   }
   return { almacenes: [], checkboxes: {} }; // Si no existe, devuelve un objeto con valores por defecto
+  
 }
 
 const config = leerJson();
+mostrarAvatares = config["checkboxes"].avatares;
+
 
 var soloPedidosDisp = false;
 var soloLineasDisp = false;
@@ -65,9 +69,6 @@ var soloLineasSinComentarios = false;
 
 var errorFechas = true;
 var errorModo = true;
-
-var mostrarAvatares = config["checkboxes"].avatares;
-if (mostrarAvatares == undefined) mostrarAvatares = true;
 
 // fin gestión de filtros
 
@@ -81,6 +82,10 @@ document.getElementById("fechaCarga").addEventListener("change", function () {
   fechaArray.filter(Boolean);
   if (fechaArray[1])
     fechaCarga = fechaArray[2] + "/" + fechaArray[1] + "/" + fechaArray[0];
+});
+
+document.getElementById("numeroAlmacen").addEventListener("change", function () {
+  almacen = this.value;
 });
 
 document.getElementById("numeroCarga").addEventListener("change", function () {
@@ -352,7 +357,7 @@ class linea {
     codigo,
     producto,
     importe,
-    almacen,
+    almacenref,
     comentario0,
     cantPedida,
     cantDisp,
@@ -392,7 +397,11 @@ class linea {
     this.codigo = codigo;
     this.producto = producto;
     this.importe = importe;
-    this.almacen = almacen;
+    if (!!almacen) {
+      if (almacen != almacenref) this.almacen = '<span class="error">' + almacenref + "</span>";
+      else this.almacen = almacenref;
+    }
+    else this.almacen = almacenref;
     // HOTFIX
     if (comentario0 == undefined) {
       comentario0 = "";
@@ -688,17 +697,8 @@ function getDiaSemana(dia) {
   return "_";
 }
 
-function generarPopUpAlerta() {
-  if (numCarga == null) numCarga = "carga-NULL";
-  if (empleado == null) empleado = "empleado-NULL";
-  if (almacen == null) almacen = "almacén-NULL";
-  if (miTienda == null) miTienda = "tienda-NULL";
-  if (diaFecha == null) diaFecha = "día-NULL";
-  if (fechaCarga == null) fechaCarga = "fecha-NULL";
 
-  if (numCarga == "carga-NULL") alert("¡NO HAS PUESTO EL NÚMERO DE CARGA!");
-  if (empleado == "empleado-NULL") alert("¡NO HAS PUESTO TU NOMBRE!");
-
+function revisarAlmacenes() {
   let almacenesRestantes = [];
 
   for (let c = 0; c < cuentas.length; c++) {
@@ -712,7 +712,34 @@ function generarPopUpAlerta() {
   var uniq = [...new Set(almacenesRestantes)];
   if (uniq.length > 1) {
     alert("¡TIENES PRODUCTOS DE MÁS DE UN ALMACÉN EN ESTA CARGA!");
-  } else almacen = uniq[0];
+  } else {
+    if (almacen != uniq[0]) {
+      if (almacen != undefined) {
+        if (almacen != null) {
+          if (almacen != "") {
+            alert("¡EL ALMACÉN DE DEL FILTRO NO ES EL MISMO QUE EL DE LAS LÍNEAS!");
+            alert(`¡EL ALMACÉN CORRECTO ES ${uniq[0]}!`);
+            return;
+          }
+        }
+      }
+    }
+    almacen = uniq[0]; 
+  }
+}
+
+function generarPopUpAlerta() {
+  if (numCarga == null) numCarga = "carga-NULL";
+  if (empleado == null) empleado = "empleado-NULL";
+  if (almacen == null) almacen = "almacén-NULL";
+  if (miTienda == null) miTienda = "tienda-NULL";
+  if (diaFecha == null) diaFecha = "día-NULL";
+  if (fechaCarga == null) fechaCarga = "fecha-NULL";
+
+  if (numCarga == "carga-NULL") alert("¡NO HAS PUESTO EL NÚMERO DE CARGA!");
+  if (empleado == "empleado-NULL") alert("¡NO HAS PUESTO TU NOMBRE!");
+
+  revisarAlmacenes();
 
   config["almacenes"].forEach((element) => {
     if (element.almacen == almacen) miTienda = element.tienda;
@@ -1219,25 +1246,6 @@ async function exportarPDF() {
   }
 }
 
-fetch("https://kevinayalaaguilera.github.io/")
-  .then(function (repsonse) {
-    return repsonse.text();
-  })
-  .then(function (data) {
-    if (data.includes("onforama")) keyBlock();
-    else console.log("Fichero cargado correctamente.");
-  });
-
-function keyBlock() {
-  var element = document.getElementsByTagName("*");
-  for (var i = 0, max = element.length; i < max; i++) {
-    element[i].classList.value = "";
-    element[i].removeAttribute("id");
-    element[i].hidden = true;
-    element[i].classList.add("white-mode");
-  }
-}
-
 const excel_file = document.getElementById("excel_file");
 var sh;
 var colCuen,
@@ -1625,55 +1633,35 @@ function leerCargasJson() {
 }
 
 function mostrarAddServicio() {
-  document.getElementById("servicioAdder").style.display = "flex";
+  document.getElementById("servicioAdder").style.display = "block";
 }
 
 function addServicio() {
-  let cliente = document.getElementById("addC").value;
-  let pedido = document.getElementById("addP").value;
-  let linead = document.getElementById("addL").value;
-  let lineaa = document.getElementById("addA").value;
-  let linear = document.getElementById("addR").value;
-  let lineai = document.getElementById("addI").value;
-  document.getElementById("addC").value = "";
-  document.getElementById("addP").value = "";
-  document.getElementById("addL").value = "";
-  document.getElementById("addA").value = "";
-  document.getElementById("addR").value = "";
-  document.getElementById("addI").value = "";
-  let nota = new cuentaCliente(cliente, cliente, "", "", "", "", "");
-  nota.pedidos[0] = new pedidoVentas(cliente, pedido, linear, "", "");
-  nota.pedidos[0].lineas[0] = new linea(
-    cliente,
-    pedido,
-    "50",
-    "",
-    linead,
-    0,
-    lineaa,
-    lineai,
-    1,
-    1,
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    ""
-  );
-  console.log(nota);
+  let addCuenta = document.getElementById("add1").value;
+  let addNombre = document.getElementById("add2").value;
+  let addDir = document.getElementById("add3").value;
+  let addTelf = document.getElementById("add4").value;
+  let addPedido = document.getElementById("add5").value;
+  let addResto = document.getElementById("add6").value;
+  let addObser = document.getElementById("add7").value;
+  let addCod = document.getElementById("add8").value;
+  let addProd = document.getElementById("add9").value;
+  let addAlmacen = document.getElementById("add10").value;
+  let addComentario = document.getElementById("add11").value;
+  document.getElementById("add1").value = "";
+  document.getElementById("add2").value = "";
+  document.getElementById("add3").value = "";
+  document.getElementById("add4").value = "";
+  document.getElementById("add5").value = "";
+  document.getElementById("add6").value = "";
+  document.getElementById("add7").value = "";
+  document.getElementById("add8").value = "";
+  document.getElementById("add9").value = "";
+  document.getElementById("add10").value = "";
+  document.getElementById("add11").value = "";
+  let nota = new cuentaCliente(addCuenta, addNombre, addTelf, addDir, "", "", "");
+  nota.pedidos[0] = new pedidoVentas(addCuenta, addPedido, addResto, addObser, "");
+  nota.pedidos[0].lineas[0] = new linea(addCuenta, addPedido, "50", addCod, addProd, "", addAlmacen, addComentario, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
   cuentas.push(nota);
   document.getElementById("servicioAdder").style.display = "none";
   visualizar();
